@@ -1,0 +1,102 @@
+/* Text meant only for screen readers. */
+.screen-reader {
+	border: 0;
+	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+	word-wrap: normal !important;
+}
+
+.screen-reader:focus {
+	background-color: #eee;
+	clip: auto !important;
+	clip-path: none;
+	color: #444;
+	display: block;
+	font-size: 1em;
+	height: auto;
+	left: 5px;
+	line-height: normal;
+	padding: 15px 23px 14px;
+	text-decoration: none;
+	top: 5px;
+	width: auto;
+}
+
+.grecaptcha-badge {
+	visibility: hidden !important;
+}
+
+div.form-fields {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 0.7em;
+
+	div.signup-input {
+		input[type='email'],
+		input[type='text'],
+		textarea {
+			width: 100%;
+			padding: 0.4em;
+			font-size: 1em;
+		}
+
+		&.wide {
+			grid-column: 1/3;
+		}
+
+		&.buttons {
+			justify-content: flex-end;
+			display: flex;
+		}
+
+		label {
+			color: white;
+		}
+
+		.signup {
+			color: #257cba;
+			border-radius: 50px;
+			padding: 7px 39px;
+			background-color: white;
+			border: 1px solid #257cba;
+			font-size: 21px;
+
+			&:hover {
+				background-color: #257cba;
+				color: white;
+				border-color: white;
+			}
+		}
+	}
+}
+
+.newsletter-subscribe {
+	.message {
+		clear: both;
+		margin-bottom: 1em;
+	}
+
+	&.email-only {
+		label {
+			display: block;
+			font-weight: bold;
+		}
+
+		input[type='email'] {
+			width: 100%;
+		}
+
+		input[type='submit'] {
+			font-weight: bold;
+			background-color: var(--accent);
+			border-radius: 4px;
+			margin-top: 1em;
+		}
+	}
+}
