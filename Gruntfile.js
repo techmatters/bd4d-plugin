@@ -1,24 +1,24 @@
-module.exports = function (grunt) {
-	const sass = require('sass');
+module.exports = function( grunt ) {
+	const sass = require( 'sass' );
 
 	// Load all grunt tasks
-	require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
-	grunt.loadNpmTasks('@lodder/grunt-postcss');
+	require( 'matchdep' ).filterDev( 'grunt-*' ).forEach( grunt.loadNpmTasks );
+	grunt.loadNpmTasks( '@lodder/grunt-postcss' );
 
 	// Project configuration
-	grunt.initConfig({
-		pkg: grunt.file.readJSON('package.json'),
+	grunt.initConfig( {
+		pkg: grunt.file.readJSON( 'package.json' ),
 
 		// use legacy color notation until sass gets updated.
 		// https://stackoverflow.com/questions/66825515/getting-error-in-css-with-rgb0-0-0-15
 		// https://stylelint.io/user-guide/rules/list/color-function-notation/
 		stylelint: {
-			src: ['wp-content/plugins/bd4d/assets/css/src/**/*.scss'],
+			src: [ 'wp-content/plugins/bd4d/assets/css/src/**/*.scss' ],
 			options: {
 				customSyntax: 'postcss-scss',
 				fix: true,
-				configFile: '.stylelintrc.json',
-			},
+				configFile: '.stylelintrc.json'
+			}
 		},
 
 		sass: {
@@ -27,40 +27,41 @@ module.exports = function (grunt) {
 					implementation: sass,
 					imagePath: 'wp-content/plugins/bd4d/assets/images',
 					outputStyle: 'expanded',
-					sourceMap: true,
+					sourceMap: true
 				},
 				files: [
 					{
 						expand: true,
 						cwd: 'wp-content/plugins/bd4d/assets/css/src',
-						src: ['*.scss', '!_*.scss'],
+						src: [ '*.scss', '!_*.scss' ],
 						dest: 'wp-content/plugins/bd4d/assets/css',
-						ext: '.src.css',
-					},
-				],
-			},
+						ext: '.src.css'
+					}
+				]
+			}
 		},
 
 		/*
 		 * Runs postcss plugins
 		 */
 		postcss: {
+
 			/* Runs postcss + autoprefixer on the minified CSS. */
 			theme: {
 				options: {
 					map: false,
-					processors: [require('autoprefixer')()],
+					processors: [ require( 'autoprefixer' )() ]
 				},
 				files: [
 					{
 						expand: true,
 						cwd: 'wp-content/plugins/bd4d/assets/css',
-						src: ['*.src.css'],
+						src: [ '*.src.css' ],
 						dest: 'wp-content/plugins/bd4d/assets/css',
-						ext: '.src.css',
-					},
-				],
-			},
+						ext: '.src.css'
+					}
+				]
+			}
 		},
 
 		cssmin: {
@@ -69,43 +70,43 @@ module.exports = function (grunt) {
 					{
 						expand: true,
 						cwd: 'wp-content/plugins/bd4d/assets/css',
-						src: ['*.src.css'],
+						src: [ '*.src.css' ],
 						dest: 'wp-content/plugins/bd4d/assets/css',
-						ext: '.min.css',
-					},
-				],
-			},
+						ext: '.min.css'
+					}
+				]
+			}
 		},
 
 		concat: {
 			options: {
 				stripBanners: true,
-				sourceMap: true,
+				sourceMap: true
 			},
 			main: {
-				src: ['wp-content/plugins/bd4d/assets/js/src/main.js'],
-				dest: 'wp-content/plugins/bd4d/assets/js/main.src.js',
-			},
+				src: [ 'wp-content/plugins/bd4d/assets/js/src/main.js' ],
+				dest: 'wp-content/plugins/bd4d/assets/js/main.src.js'
+			}
 		},
 
 		uglify: {
 			all: {
 				files: {
 					'wp-content/plugins/bd4d/assets/js/main.min.js': [
-						'wp-content/plugins/bd4d/assets/js/main.src.js',
-					],
+						'wp-content/plugins/bd4d/assets/js/main.src.js'
+					]
 				},
 				options: {
-					sourceMap: false,
-				},
-			},
+					sourceMap: false
+				}
+			}
 		},
 
 		eslint: {
-			src: ['wp-content/plugins/bd4d/assets/js/src/**/*.js'],
+			src: [ 'wp-content/plugins/bd4d/assets/js/src/**/*.js' ],
 			options: {
-				fix: true,
-			},
+				fix: true
+			}
 		},
 
 		watch: {
@@ -115,107 +116,108 @@ module.exports = function (grunt) {
 					'wp-content/plugins/bd4d/template-parts/**/*.php',
 					'wp-content/plugins/bd4d/includes/**/*.php',
 					'!vendor/**',
-					'!node_modules/**',
+					'!node_modules/**'
 				],
-				tasks: ['phplint', 'phpcbf'],
+				tasks: [ 'phplint', 'phpcbf' ]
 			},
 
 			css: {
 				files: [
 					'wp-content/plugins/bd4d/assets/css/src/**/*.scss',
-					'wp-content/plugins/bd4d/assets/js/src/**/*.js',
+					'wp-content/plugins/bd4d/assets/js/src/**/*.js'
 				],
-				tasks: ['css', 'js'],
+				tasks: [ 'css', 'js' ],
 				options: {
-					debounceDelay: 500,
-				},
+					debounceDelay: 500
+				}
 			},
 
 			scripts: {
-				files: ['wp-content/plugins/bd4d/assets/js/src/**/*.js'],
-				tasks: ['js'],
+				files: [ 'wp-content/plugins/bd4d/assets/js/src/**/*.js' ],
+				tasks: [ 'js' ],
 				options: {
-					debounceDelay: 500,
-				},
-			},
+					debounceDelay: 500
+				}
+			}
 		},
 
 		phplint: {
 			phpArgs: {
-				'-lf': null,
+				'-lf': null
 			},
 			files: [
 				'wp-content/plugins/bd4d/*.php',
 				'wp-content/plugins/bd4d/template-parts/**/*.php',
-				'wp-content/plugins/bd4d/includes/**/*.php',
-			],
+				'wp-content/plugins/bd4d/includes/**/*.php'
+			]
 		},
 
 		git_modified_files: {
 			options: {
 				diffFiltered: 'ACMRTUXB', // Optional: default is 'AMC',
-				regexp: /\.php$/, // Optional: default is /.*/
-			},
+				regexp: /\.php$/ // Optional: default is /.*/
+			}
 		},
 
 		phpcs: {
 			application: {
-				src: '<%= gmf.filtered %>',
+				src: '<%= gmf.filtered %>'
 			},
 			options: {
-				bin: 'vendor/bin/phpcs',
-			},
+				bin: 'vendor/bin/phpcs'
+			}
 		},
 
 		phpcbf: {
 			options: {
 				bin: 'vendor/bin/phpcbf',
-				noPatch: false,
+				noPatch: false
 			},
 			files: {
-				src: ['*.php', 'template-parts/**/*.php', 'includes/**/*.php'],
-			},
-		},
-	});
+				src: [ '*.php', 'template-parts/**/*.php', 'includes/**/*.php' ]
+			}
+		}
+	} );
 
 	// Set a default, so if phpcs is run directly it scans everything
-	grunt.config.set('gmf.filtered', [
+	grunt.config.set( 'gmf.filtered', [
 		'wp-content/plugins/bd4d/**/*.php',
 		'!vendor/**',
-		'!node_modules/**',
-	]);
-	grunt.registerTask('precommit', ['git_modified_files', 'maybe-phpcs']);
+		'!node_modules/**'
+	] );
+	grunt.registerTask( 'precommit', [ 'git_modified_files', 'maybe-phpcs' ] );
 	grunt.registerTask(
 		'maybe-phpcs',
 		'Only run phpcs if git_modified_files has found changes.',
-		function () {
-			// Check all, because there's no default set for all and we can see if we have files
-			var allModified = grunt.config.get('gmf.all');
-			var matches = allModified.filter(function (str) {
-				return -1 !== str.search(/\.php$/);
-			});
+		function() {
 
-			if (!matches.length) {
-				grunt.log.writeln('No php files to sniff. Skipping phpcs.');
+			// Check all, because there's no default set for all and we can see if we have files
+			var allModified = grunt.config.get( 'gmf.all' );
+			var matches = allModified.filter( function( str ) {
+				return -1 !== str.search( /\.php$/ );
+			} );
+
+			if ( ! matches.length ) {
+				grunt.log.writeln( 'No php files to sniff. Skipping phpcs.' );
 			} else {
-				grunt.task.run('phpcs');
+				grunt.task.run( 'phpcs' );
 			}
 		}
 	);
 
 	// PHP Only
-	grunt.registerTask('php', ['phplint', 'phpcs']);
+	grunt.registerTask( 'php', [ 'phplint', 'phpcs' ] );
 
 	// JS Only
-	grunt.registerTask('js', ['eslint', 'concat', 'uglify']);
+	grunt.registerTask( 'js', [ 'eslint', 'concat', 'uglify' ] );
 
 	// CSS Only
-	grunt.registerTask('css', ['stylelint', 'sass', 'postcss', 'cssmin']);
+	grunt.registerTask( 'css', [ 'stylelint', 'sass', 'postcss', 'cssmin' ] );
 
 	// Default task.
 	// CSS & JS Only
-	grunt.registerTask('css-js', ['css', 'js']);
+	grunt.registerTask( 'css-js', [ 'css', 'js' ] );
 
 	// Default task.
-	grunt.registerTask('default', ['js', 'css', 'php']);
+	grunt.registerTask( 'default', [ 'js', 'css', 'php' ] );
 };
