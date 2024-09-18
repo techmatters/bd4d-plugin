@@ -53,7 +53,7 @@ class BD4D {
 				'_ajax_url'   => admin_url( 'admin-ajax.php' ),
 				'_ajax_nonce' => wp_create_nonce( self::FIELD_NAME ),
 				'sitekey'     => Google_Recaptcha::get_site_key(),
-				'success'     => 'Thank you for reaching out.',
+				'success'     => 'Thank you for reaching out to A Better Deal for Data.',
 				'error_codes' => [
 					self::SEND_ERROR        => 'Unable to send message',
 					self::JSON_ERROR        => 'Unable to parse JSON result.',
@@ -205,6 +205,7 @@ class BD4D {
 
 		$result = self::add( $email, $first_name, $last_name, $message, $newsletter, $supporter );
 		if ( self::SEND_SUCCESS === $result ) {
+			self::send_confirmation_message( $email );
 			wp_send_json_success();
 		}
 
@@ -214,6 +215,15 @@ class BD4D {
 		}
 
 		wp_send_json_error( $data );
+	}
+
+	/**
+	 * Send the user a message.
+	 *
+	 * @param string $recipient              User's email address.
+	 */
+	public static function send_confirmation_message( $recipient ) {
+		wp_mail( $recipient, 'Thank you for reaching out to A Better Deal for Data', 'We appreciate your interest.' ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_mail_wp_mail
 	}
 
 	/**
