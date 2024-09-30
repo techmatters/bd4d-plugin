@@ -130,11 +130,13 @@ class BD4D {
 	 * @param string  $email              User's email address.
 	 * @param string  $first_name         User's first name.
 	 * @param string  $last_name          User's last name.
+	 * @param string  $affiliation        User's company or organization.
+	 * @param string  $source             User's referral source.
 	 * @param string  $message            User's message.
 	 * @param boolean $newsletter         Whether or not to subscribe to the newsletter.
 	 * @param boolean $supporter          Whether or not to identify the user as a supporter.
 	 */
-	public static function add( $email, $first_name = false, $last_name = false, $message = false, $newsletter = false, $supporter = false ) {
+	public static function add( $email, $first_name = false, $last_name = false, $affiliation = false, $source = false, $message = false, $newsletter = false, $supporter = false ) {
 		if ( ! $email ) {
 			return self::MISSING_EMAIL;
 		}
@@ -146,15 +148,18 @@ class BD4D {
 		if ( $last_name ) {
 			$data['fields']['Last Name'] = $last_name;
 		}
+		if ( $affiliation ) {
+			$data['fields']['Affiliation'] = $affiliation;
+		}
+		if ( $source ) {
+			$data['fields']['Source'] = $source;
+		}
 		if ( $message ) {
-			$data['fields']['Message'] = $message;
+			$data['fields']['Form Comments'] = $message;
 		}
-		if ( $newsletter ) {
-			$data['fields']['Newsletter'] = true;
-		}
-		if ( $supporter ) {
-			$data['fields']['Supporter'] = true;
-		}
+		
+		$data['fields']['Email-Opted In?'] = $newsletter;
+		$data['fields']['CotW-OptedIn?']   = $supporter;
 
 		$raw_result = wp_remote_post(
 			self::BASE_URL . '/' . self::base_id() . '/' . self::table_id(),
@@ -206,14 +211,27 @@ class BD4D {
 			}
 		}
 
-		$email      = empty( $_POST['email'] ) ? '' : trim( sanitize_email( wp_unslash( $_POST['email'] ) ) );
-		$first_name = empty( $_POST['first_name'] ) ? '' : trim( sanitize_text_field( wp_unslash( $_POST['first_name'] ) ) );
-		$last_name  = empty( $_POST['last_name'] ) ? '' : trim( sanitize_text_field( wp_unslash( $_POST['last_name'] ) ) );
+		$email       = empty( $_POST['email'] ) ? '' : trim( sanitize_email( wp_unslash( $_POST['email'] ) ) );
+		$first_name  = empty( $_POST['first_name'] ) ? '' : trim( sanitize_text_field( wp_unslash( $_POST['first_name'] ) ) );
+		$last_name   = empty( $_POST['last_name'] ) ? '' : trim( sanitize_text_field( wp_unslash( $_POST['last_name'] ) ) );
+		$affiliation = empty( $_POST['affiliation'] ) ? '' : trim( sanitize_text_field( wp_unslash( $_POST['affiliation'] ) ) );
+
+		// Sanitize each item in the array. Confirm it's in the list of allowed items.
+		$source = empty( $_POST['source'] ) ? '' : array_filter(
+			array_map(
+				function ( $data ) {
+					$item = trim( sanitize_text_field( wp_unslash( $data ) ) );
+					return array_key_exists( $item, self::SOURCES ) ? $item : '';
+				},
+				$_POST['source'] 
+			)
+		);
+
 		$message    = empty( $_POST['message'] ) ? '' : trim( sanitize_text_field( wp_unslash( $_POST['message'] ) ) );
 		$newsletter = ! empty( $_POST['newsletter'] );
 		$supporter  = ! empty( $_POST['supporter'] );
 
-		$result = self::add( $email, $first_name, $last_name, $message, $newsletter, $supporter );
+		$result = self::add( $email, $first_name, $last_name, $affiliation, $source, $message, $newsletter, $supporter );
 		if ( self::SEND_SUCCESS === $result ) {
 			self::send_confirmation_message( $email );
 			wp_send_json_success();
