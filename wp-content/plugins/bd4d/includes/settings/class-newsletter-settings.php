@@ -1,30 +1,30 @@
 <?php
 /**
- * Configure the Newsletter settings page.
+ * Configure the Contact Form settings page.
  *
  * @package LandPKS
  * @since   1.0.0
  */
 
 /**
- * Newsletter class.
+ * Contact Form class.
  *
- * Implements the Newsletter settings page (Airtable and Google ReCAPTCHA).
+ * Implements the Contact Form settings page (Airtable and Google ReCAPTCHA).
  */
-class Newsletter_Settings extends Settings {
+class Contact_Form_Settings extends Settings {
 
-	const PAGE_TITLE  = 'Newsletter';
+	const PAGE_TITLE  = 'Contact Form';
 	const FIELD_GROUP = 'newsletter_fields';
 
 	/**
-	 * Add Newsletter submenu page.
+	 * Add Contact Form submenu page.
 	 */
 	public static function register_menu() {
-		add_options_page( 'Newsletter', 'Newsletter', 'edit_pages', 'google', [ get_called_class(), 'page' ] );
+		add_options_page( 'Contact Form', 'Contact Form', 'edit_pages', 'contact-form', [ get_called_class(), 'page' ] );
 	}
 
 	/**
-	 * Configure Newsletter form settings.
+	 * Configure Contact Form form settings.
 	 */
 	public static function register_settings() {
 		add_settings_section(
@@ -93,4 +93,4 @@ class Newsletter_Settings extends Settings {
 	}
 }
 
-add_action( 'after_setup_theme', [ 'Newsletter_Settings', 'hooks' ] );
+add_action( 'after_setup_theme', [ 'Contact_Form_Settings', 'hooks' ] );
