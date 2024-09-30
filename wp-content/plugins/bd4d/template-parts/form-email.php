@@ -21,20 +21,17 @@
 		<div class="signup-input">
 			<label class="screen-reader" for="inline-subscribe-affiliation">Affiliation</label><input id="inline-subscribe-affiliation" type="text" name="affiliation" autocomplete="organization" placeholder="Affiliation" />
 		</div>
-		<div class="signup-input">
+		<div class="signup-input wide">
 			<label class="screen-reader" for="inline-subscribe-source">How did you hear about A Better Deal For Data?</label>
-			<select id="inline-subscribe-source" name="source" multiple>
-				<option value="Word of Mouth">Word of mouth</option>
-				<option value="Tech Matters">Tech Matters</option>
-				<option value="Online search">Online search</option>
-				<option value="Event">Event</option>
-				<option value="Social media">Social media</option>
-				<option value="Article, blog, or podcast">Article, blog, or podcast</option>
-				<option value="Other">Other</option>
+			<select id="inline-subscribe-source" name="source" multiple size="7">
+				<?php foreach ( BD4D::SOURCES as $value => $label ) : ?>
+					<option value="<?php echo esc_attr( $value ); ?>"><?php echo esc_html( $label ); ?></option>
+				<?php endforeach; ?>
 			</select>
 		</div>
 		<div class="signup-input wide">
-			<label class="screen-reader" for="inline-subscribe-affiliation">Message</label><textarea id="inline-subscribe-message" type="message" rows="5" name="message" placeholder="Comments? Feedback? Questions? How do you use data in your community?"></textarea>
+			<label class="screen-reader" for="inline-subscribe-message">Message</label>
+			<textarea id="inline-subscribe-message" type="message" rows="5" name="message" placeholder="Comments? Feedback? Questions? How do you use data in your community?"></textarea>
 		</div>
 		<div class="signup-input wide">
 			<label for="inline-subscribe-newsletter">
