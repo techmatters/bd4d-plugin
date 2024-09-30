@@ -27,6 +27,16 @@ class BD4D {
 	const FIELD_NAME = 'newsletter_form';
 	const NONCE_KEY  = 'newsletter_form_nonce';
 
+	const SOURCES = [
+		'Word of Mouth'             => 'Word of mouth',
+		'Tech Matters'              => 'Tech Matters',
+		'Online Search'             => 'Online search',
+		'Event'                     => 'Event',
+		'Social Media'              => 'Social media',
+		'Article, Blog, or Podcast' => 'Aricle, blog, or podcast',
+		'Other'                     => 'Other',
+	];
+
 	/**
 	 * Add actions and filters.
 	 */
