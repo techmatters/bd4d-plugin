@@ -19,7 +19,9 @@ window.bd4d = {
 
 		const firstName = event.target.querySelector( 'input[name="first_name"]' );
 		const lastName = event.target.querySelector( 'input[name="last_name"]' );
-		const message = event.target.querySelector( 'input[name="message"]' );
+		const affiliation = event.target.querySelector( 'input[name="affiliation"]' );
+		const source = event.target.querySelector( 'select[name="source"]' );
+		const message = event.target.querySelector( 'textarea[name="message"]' );
 		const newsletter = event.target.querySelector( 'input[name="newsletter"]' );
 		const supporter = event.target.querySelector( 'input[name="supporter"]' );
 
@@ -31,15 +33,23 @@ window.bd4d = {
 			data.last_name = lastName.value;
 		}
 
+		if ( affiliation ) {
+			data.affiliation = affiliation.value;
+		}
+
+		if ( source ) {
+			data.source = [ ...source.selectedOptions ].map( o => o.value );
+		}
+
 		if ( message ) {
 			data.message = message.value;
 		}
 
-		if ( newsletter ) {
+		if ( newsletter.checked ) {
 			data.newsletter = newsletter.value;
 		}
 
-		if ( supporter ) {
+		if ( supporter.checked ) {
 			data.supporter = supporter.value;
 		}
 

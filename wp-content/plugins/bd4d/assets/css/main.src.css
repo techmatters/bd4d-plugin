@@ -39,6 +39,7 @@ div.form-fields {
 }
 div.form-fields div.signup-input input[type=email],
 div.form-fields div.signup-input input[type=text],
+div.form-fields div.signup-input select,
 div.form-fields div.signup-input textarea {
   width: 100%;
   padding: 0.4em;
