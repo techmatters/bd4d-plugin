@@ -115,7 +115,7 @@ module.exports = function (grunt) {
 			},
 
 			css: {
-				files: ['wp-content/**bd4d/assets/css/src/**/*.scss'],
+				files: ['wp-content/**/assets/css/src/**/*.scss'],
 				tasks: ['css'],
 				options: {
 					debounceDelay: 500,
