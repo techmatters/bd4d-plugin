@@ -52,5 +52,13 @@
 			<input type="submit" class="signup g-rec≈ptcha" value="Send Message" />
 		</div>
 	</div>
-	<div class="et_pb_bg_layout_dark message"></div>
+	<div class="message hidden">
+	<p>Thank you for joining us—we’re excited to include you in A Better Deal for Data!</p>
+
+	<p>If you’ve opted in to receive email updates from Better Deal for Data, we look forward to sharing occasional program announcements, events, and new posts and publications.</p>
+
+	<p>And, if you requested more information on our Coalition of the Willing, and included your email address, we will reach out to you directly within three business days.</p>
+
+	<p>More questions? Please email us at <a href="mailto:info@bd4d.org">info@bd4d.org</a>.</p>
+	</div>
 </form>
