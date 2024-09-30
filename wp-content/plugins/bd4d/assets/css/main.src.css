@@ -37,7 +37,8 @@
 }
 
 div.form-fields label,
-div.message {
+div.message,
+div.message a {
   color: white;
 }
 
