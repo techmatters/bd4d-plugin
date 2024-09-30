@@ -1,13 +1,13 @@
 <?php
 /**
- * Newsletter forms for BD4D
+ * Contact Form for BD4D
  *
  * @package LandPKS
  * @since   1.0.0
  */
 
 /**
- * Holds methods for Newsletter
+ * Holds methods for Contact Form
  * Class BD4D
  */
 class BD4D {
