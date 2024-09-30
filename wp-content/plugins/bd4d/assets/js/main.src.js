@@ -60,7 +60,7 @@ window.bd4d = {
 			success: res => {
 				if ( true === res.success ) {
 					jQuery( event.target.querySelector( '.form-fields' ) ).slideUp();
-					event.target.querySelector( '.message' ).textContent = localize.success;
+					event.target.querySelector( '.message' ).classList.remove( 'hidden' );
 				} else {
 					let errorMessage = localize.error_codes[res?.data?.error_code];
 					if ( 4 === res?.data?.error_code ) {
