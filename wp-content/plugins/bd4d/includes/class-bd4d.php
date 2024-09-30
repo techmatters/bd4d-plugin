@@ -63,7 +63,6 @@ class BD4D {
 				'_ajax_url'   => admin_url( 'admin-ajax.php' ),
 				'_ajax_nonce' => wp_create_nonce( self::FIELD_NAME ),
 				'sitekey'     => Google_Recaptcha::get_site_key(),
-				'success'     => 'Thank you for reaching out to A Better Deal for Data.',
 				'error_codes' => [
 					self::SEND_ERROR        => 'Unable to send message',
 					self::JSON_ERROR        => 'Unable to parse JSON result.',
