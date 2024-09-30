@@ -60,6 +60,9 @@ window.bd4d = {
 			success: res => {
 				if ( true === res.success ) {
 					jQuery( event.target.querySelector( '.form-fields' ) ).slideUp();
+					document
+						.querySelector( '#joinbd4dnet .et_pb_text_inner' )
+						.classList.add( 'hidden' );
 					event.target.querySelector( '.message' ).classList.remove( 'hidden' );
 				} else {
 					let errorMessage = localize.error_codes[res?.data?.error_code];
