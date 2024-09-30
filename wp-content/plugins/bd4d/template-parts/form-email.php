@@ -10,10 +10,10 @@
 <form id="inline-subscribe" class="newsletter-subscribe" method="post">
 	<div class="form-fields">
 		<div class="signup-input">
-			<label class="screen-reader" for="inline-subscribe-first-name">First Name</label><input id="inline-subscribe-first-name" type="text" name="first_name" placeholder="First name" />
+			<label class="screen-reader" for="inline-subscribe-first-name">First Name</label><input id="inline-subscribe-first-name" type="text" name="first_name" placeholder="First name *" required="required" />
 		</div>
 		<div class="signup-input">
-			<label class="screen-reader" for="inline-subscribe-last-name">Last Name</label><input id="inline-subscribe-last-name" type="text" name="last_name" placeholder="Last name" />
+			<label class="screen-reader" for="inline-subscribe-last-name">Last Name</label><input id="inline-subscribe-last-name" type="text" name="last_name" placeholder="Last name *"  required="required" />
 		</div>
 		<div class="signup-input">
 			<label class="screen-reader" for="inline-subscribe-email">Email address</label><input id="inline-subscribe-email" type="email" name="email" placeholder="Email address *" required="required" />
