@@ -32,6 +32,15 @@
 	visibility: hidden !important;
 }
 
+.hidden {
+	display: none;
+}
+
+div.form-fields label,
+div.message {
+	color: white;
+}
+
 div.form-fields {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
@@ -54,10 +63,6 @@ div.form-fields {
 		&.buttons {
 			justify-content: flex-end;
 			display: flex;
-		}
-
-		label {
-			color: white;
 		}
 
 		.signup {
