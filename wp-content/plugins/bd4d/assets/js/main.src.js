@@ -80,10 +80,30 @@ window.bd4d = {
 		} );
 	},
 
+	emailFieldHandler: function( event ) {
+		if ( event.target.value ) {
+			window.bd4d.emailCheckbox.removeAttribute( 'disabled' );
+		} else {
+			window.bd4d.emailCheckbox.removeAttribute( 'checked' );
+			window.bd4d.emailCheckbox.setAttribute( 'disabled', 'disabled' );
+		}
+	},
+
 	setup: function() {
 		const subscribeForm = document.getElementById( 'inline-subscribe' );
 
 		if ( subscribeForm ) {
+			window.bd4d.emailField = document.getElementById(
+				'inline-subscribe-email'
+			);
+			window.bd4d.emailCheckbox = document.getElementById(
+				'inline-subscribe-newsletter'
+			);
+			window.bd4d.emailField.addEventListener(
+				'input',
+				window.bd4d.emailFieldHandler
+			);
+
 			subscribeForm.addEventListener( 'submit', window.bd4d.processSubscription );
 			if ( window.grecaptcha ) {
 				grecaptcha.ready( window.bd4d.gcaptchaHandler );
