@@ -36,7 +36,7 @@
 		</div>
 		<div class="signup-input wide">
 			<label for="inline-subscribe-newsletter">
-				<input id="inline-subscribe-newsletter" type="checkbox" name="newsletter" value="true" />
+				<input id="inline-subscribe-newsletter" disabled type="checkbox" name="newsletter" value="true" />
 				Yes! Sign me up to receive email updates
 			</label>
 		</div>
