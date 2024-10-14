@@ -42,7 +42,7 @@
 		</div>
 		<div class="signup-input wide">
 			<label for="inline-subscribe-supporter">
-				<input id="inline-subscribe-supporter" type="checkbox" name="supporter" value="true" />
+				<input id="inline-subscribe-supporter" disabled type="checkbox" name="supporter" value="true" />
 				Tell me more about the Coalition of the Willing!
 			</label>
 		</div>
