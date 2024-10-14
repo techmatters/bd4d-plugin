@@ -83,9 +83,12 @@ window.bd4d = {
 	emailFieldHandler: function( event ) {
 		if ( event.target.value ) {
 			window.bd4d.emailCheckbox.removeAttribute( 'disabled' );
+			window.bd4d.supporterCheckbox.removeAttribute( 'disabled' );
 		} else {
 			window.bd4d.emailCheckbox.removeAttribute( 'checked' );
 			window.bd4d.emailCheckbox.setAttribute( 'disabled', 'disabled' );
+			window.bd4d.supporterCheckbox.removeAttribute( 'checked' );
+			window.bd4d.supporterCheckbox.setAttribute( 'disabled', 'disabled' );
 		}
 	},
 
@@ -98,6 +101,9 @@ window.bd4d = {
 			);
 			window.bd4d.emailCheckbox = document.getElementById(
 				'inline-subscribe-newsletter'
+			);
+			window.bd4d.supporterCheckbox = document.getElementById(
+				'inline-subscribe-supporter'
 			);
 			window.bd4d.emailField.addEventListener(
 				'input',
