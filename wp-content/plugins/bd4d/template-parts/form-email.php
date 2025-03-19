@@ -2,7 +2,7 @@
 /**
  * The template for displaying inline contact forms.
  *
- * @package LandPKS
+ * @package BD4D
  * @since   1.0.0
  */
 

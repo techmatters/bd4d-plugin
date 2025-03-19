@@ -2,7 +2,7 @@
 /**
  * Contact Form for BD4D
  *
- * @package LandPKS
+ * @package BD4D
  * @since   1.0.0
  */
 

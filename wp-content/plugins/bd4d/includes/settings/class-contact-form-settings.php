@@ -2,7 +2,7 @@
 /**
  * Configure the Contact Form settings page.
  *
- * @package LandPKS
+ * @package BD4D
  * @since   1.0.0
  */
 
