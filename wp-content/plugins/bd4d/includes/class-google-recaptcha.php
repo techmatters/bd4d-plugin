@@ -2,7 +2,7 @@
 /**
  * Initialize and verify Google ReCAPTCHA.
  *
- * @package LandPKS
+ * @package BD4D
  * @since 1.0.0
  */
 

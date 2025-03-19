@@ -92,9 +92,7 @@ module.exports = function( grunt ) {
 		uglify: {
 			all: {
 				files: {
-					'wp-content/plugins/bd4d/assets/js/main.min.js': [
-						'wp-content/plugins/bd4d/assets/js/main.src.js'
-					]
+					'wp-content/plugins/bd4d/assets/js/main.min.js': [ 'wp-content/plugins/bd4d/assets/js/main.src.js' ]
 				},
 				options: {
 					sourceMap: false
@@ -103,7 +101,7 @@ module.exports = function( grunt ) {
 		},
 
 		eslint: {
-			src: [ 'wp-content/plugins/bd4d/assets/js/src/**/*.js' ],
+			src: [ 'wp-content/plugins/bd4d/assets/js/src/**/*.js', '*.js' ],
 			options: {
 				fix: true
 			}
@@ -111,29 +109,20 @@ module.exports = function( grunt ) {
 
 		watch: {
 			php: {
-				files: [
-					'wp-content/plugins/bd4d/*.php',
-					'wp-content/plugins/bd4d/template-parts/**/*.php',
-					'wp-content/plugins/bd4d/includes/**/*.php',
-					'!vendor/**',
-					'!node_modules/**'
-				],
+				files: [ 'wp-content/**/*.php', '!vendor/**', '!node_modules/**' ],
 				tasks: [ 'phplint', 'phpcbf' ]
 			},
 
 			css: {
-				files: [
-					'wp-content/plugins/bd4d/assets/css/src/**/*.scss',
-					'wp-content/plugins/bd4d/assets/js/src/**/*.js'
-				],
-				tasks: [ 'css', 'js' ],
+				files: [ 'wp-content/**/assets/css/src/**/*.scss' ],
+				tasks: [ 'css' ],
 				options: {
 					debounceDelay: 500
 				}
 			},
 
 			scripts: {
-				files: [ 'wp-content/plugins/bd4d/assets/js/src/**/*.js' ],
+				files: [ 'wp-content/**/assets/js/src/**/*.js' ],
 				tasks: [ 'js' ],
 				options: {
 					debounceDelay: 500
@@ -145,11 +134,7 @@ module.exports = function( grunt ) {
 			phpArgs: {
 				'-lf': null
 			},
-			files: [
-				'wp-content/plugins/bd4d/*.php',
-				'wp-content/plugins/bd4d/template-parts/**/*.php',
-				'wp-content/plugins/bd4d/includes/**/*.php'
-			]
+			files: [ 'wp-content/**/*.php' ]
 		},
 
 		git_modified_files: {
@@ -167,43 +152,34 @@ module.exports = function( grunt ) {
 				bin: 'vendor/bin/phpcs'
 			}
 		},
-
 		phpcbf: {
 			options: {
 				bin: 'vendor/bin/phpcbf',
 				noPatch: false
 			},
 			files: {
-				src: [ '*.php', 'template-parts/**/*.php', 'includes/**/*.php' ]
+				src: [ 'wp-content/**/*.php' ]
 			}
 		}
 	} );
 
 	// Set a default, so if phpcs is run directly it scans everything
-	grunt.config.set( 'gmf.filtered', [
-		'wp-content/plugins/bd4d/**/*.php',
-		'!vendor/**',
-		'!node_modules/**'
-	] );
+	grunt.config.set( 'gmf.filtered', [ '**/*.php', '!vendor/**', '!node_modules/**' ] );
 	grunt.registerTask( 'precommit', [ 'git_modified_files', 'maybe-phpcs' ] );
-	grunt.registerTask(
-		'maybe-phpcs',
-		'Only run phpcs if git_modified_files has found changes.',
-		function() {
+	grunt.registerTask( 'maybe-phpcs', 'Only run phpcs if git_modified_files has found changes.', function() {
 
-			// Check all, because there's no default set for all and we can see if we have files
-			var allModified = grunt.config.get( 'gmf.all' );
-			var matches = allModified.filter( function( str ) {
-				return -1 !== str.search( /\.php$/ );
-			} );
+		// Check all, because there's no default set for all and we can see if we have files
+		var allModified = grunt.config.get( 'gmf.all' );
+		var matches = allModified.filter( function( str ) {
+			return -1 !== str.search( /\.php$/ );
+		} );
 
-			if ( ! matches.length ) {
-				grunt.log.writeln( 'No php files to sniff. Skipping phpcs.' );
-			} else {
-				grunt.task.run( 'phpcs' );
-			}
+		if ( ! matches.length ) {
+			grunt.log.writeln( 'No php files to sniff. Skipping phpcs.' );
+		} else {
+			grunt.task.run( 'phpcs' );
 		}
-	);
+	} );
 
 	// PHP Only
 	grunt.registerTask( 'php', [ 'phplint', 'phpcs' ] );

@@ -32,14 +32,25 @@
 	visibility: hidden !important;
 }
 
+html body .hidden {
+	display: none;
+}
+
+div.form-fields label,
+div.message,
+div.message a {
+	color: white;
+}
+
 div.form-fields {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	grid-gap: 0.7em;
 
 	div.signup-input {
-		input[type='email'],
-		input[type='text'],
+		input[type="email"],
+		input[type="text"],
+		select,
 		textarea {
 			width: 100%;
 			padding: 0.4em;
@@ -53,10 +64,6 @@ div.form-fields {
 		&.buttons {
 			justify-content: flex-end;
 			display: flex;
-		}
-
-		label {
-			color: white;
 		}
 
 		.signup {
@@ -88,11 +95,11 @@ div.form-fields {
 			font-weight: bold;
 		}
 
-		input[type='email'] {
+		input[type="email"] {
 			width: 100%;
 		}
 
-		input[type='submit'] {
+		input[type="submit"] {
 			font-weight: bold;
 			background-color: var(--accent);
 			border-radius: 4px;

@@ -1,13 +1,13 @@
 <?php
 /**
- * Newsletter forms for BD4D
+ * Contact Form for BD4D
  *
- * @package LandPKS
+ * @package BD4D
  * @since   1.0.0
  */
 
 /**
- * Holds methods for Newsletter
+ * Holds methods for Contact Form
  * Class BD4D
  */
 class BD4D {
@@ -27,11 +27,21 @@ class BD4D {
 	const FIELD_NAME = 'newsletter_form';
 	const NONCE_KEY  = 'newsletter_form_nonce';
 
+	const SOURCES = [
+		'Word of Mouth'             => 'Word of mouth',
+		'Tech Matters'              => 'Tech Matters',
+		'Online Search'             => 'Online search',
+		'Event'                     => 'Event',
+		'Social Media'              => 'Social media',
+		'Article, Blog, or Podcast' => 'Aricle, blog, or podcast',
+		'Other'                     => 'Other',
+	];
+
 	/**
 	 * Add actions and filters.
 	 */
 	public static function hooks() {
-		add_shortcode( 'newsletter-email-form', [ __CLASS__, 'render_email_form' ] );
+		add_shortcode( 'contact-form', [ __CLASS__, 'render_email_form' ] );
 		add_action( 'wp_ajax_nopriv_send_message', [ __CLASS__, 'send_message' ] );
 		add_action( 'wp_ajax_send_message', [ __CLASS__, 'send_message' ] );
 		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'enqueue_scripts' ] );
@@ -53,7 +63,6 @@ class BD4D {
 				'_ajax_url'   => admin_url( 'admin-ajax.php' ),
 				'_ajax_nonce' => wp_create_nonce( self::FIELD_NAME ),
 				'sitekey'     => Google_Recaptcha::get_site_key(),
-				'success'     => 'Thank you for reaching out to A Better Deal for Data.',
 				'error_codes' => [
 					self::SEND_ERROR        => 'Unable to send message',
 					self::JSON_ERROR        => 'Unable to parse JSON result.',
@@ -120,11 +129,13 @@ class BD4D {
 	 * @param string  $email              User's email address.
 	 * @param string  $first_name         User's first name.
 	 * @param string  $last_name          User's last name.
+	 * @param string  $affiliation        User's company or organization.
+	 * @param string  $source             User's referral source.
 	 * @param string  $message            User's message.
 	 * @param boolean $newsletter         Whether or not to subscribe to the newsletter.
 	 * @param boolean $supporter          Whether or not to identify the user as a supporter.
 	 */
-	public static function add( $email, $first_name = false, $last_name = false, $message = false, $newsletter = false, $supporter = false ) {
+	public static function add( $email, $first_name = false, $last_name = false, $affiliation = false, $source = false, $message = false, $newsletter = false, $supporter = false ) {
 		if ( ! $email ) {
 			return self::MISSING_EMAIL;
 		}
@@ -136,15 +147,18 @@ class BD4D {
 		if ( $last_name ) {
 			$data['fields']['Last Name'] = $last_name;
 		}
+		if ( $affiliation ) {
+			$data['fields']['Affiliation'] = $affiliation;
+		}
+		if ( $source ) {
+			$data['fields']['Source'] = $source;
+		}
 		if ( $message ) {
-			$data['fields']['Message'] = $message;
+			$data['fields']['Form Comments'] = $message;
 		}
-		if ( $newsletter ) {
-			$data['fields']['Newsletter'] = true;
-		}
-		if ( $supporter ) {
-			$data['fields']['Supporter'] = true;
-		}
+		
+		$data['fields']['Email-Opted In?'] = $newsletter;
+		$data['fields']['CotW-OptedIn?']   = $supporter;
 
 		$raw_result = wp_remote_post(
 			self::BASE_URL . '/' . self::base_id() . '/' . self::table_id(),
@@ -196,16 +210,32 @@ class BD4D {
 			}
 		}
 
-		$email      = empty( $_POST['email'] ) ? '' : trim( sanitize_email( wp_unslash( $_POST['email'] ) ) );
-		$first_name = empty( $_POST['first_name'] ) ? '' : trim( sanitize_text_field( wp_unslash( $_POST['first_name'] ) ) );
-		$last_name  = empty( $_POST['last_name'] ) ? '' : trim( sanitize_text_field( wp_unslash( $_POST['last_name'] ) ) );
+		$email       = empty( $_POST['email'] ) ? '' : trim( sanitize_email( wp_unslash( $_POST['email'] ) ) );
+		$first_name  = empty( $_POST['first_name'] ) ? '' : trim( sanitize_text_field( wp_unslash( $_POST['first_name'] ) ) );
+		$last_name   = empty( $_POST['last_name'] ) ? '' : trim( sanitize_text_field( wp_unslash( $_POST['last_name'] ) ) );
+		$affiliation = empty( $_POST['affiliation'] ) ? '' : trim( sanitize_text_field( wp_unslash( $_POST['affiliation'] ) ) );
+
+		// Sanitize each item in the array. Confirm it's in the list of allowed items.
+		$source = empty( $_POST['source'] ) ? '' : array_filter(
+			array_map(
+				function ( $data ) {
+					$item = trim( sanitize_text_field( wp_unslash( $data ) ) );
+					return array_key_exists( $item, self::SOURCES ) ? $item : '';
+				},
+				$_POST['source']  // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			)
+		);
+
 		$message    = empty( $_POST['message'] ) ? '' : trim( sanitize_text_field( wp_unslash( $_POST['message'] ) ) );
 		$newsletter = ! empty( $_POST['newsletter'] );
 		$supporter  = ! empty( $_POST['supporter'] );
 
-		$result = self::add( $email, $first_name, $last_name, $message, $newsletter, $supporter );
+		$subject = 'Welcome to a Better Deal for Data!';
+
+		$result = self::add( $email, $first_name, $last_name, $affiliation, $source, $message, $newsletter, $supporter );
+		$body   = self::message_body( $message, $newsletter, $supporter );
 		if ( self::SEND_SUCCESS === $result ) {
-			self::send_confirmation_message( $email );
+			self::send_confirmation_message( $email, $subject, $body );
 			wp_send_json_success();
 		}
 
@@ -221,13 +251,31 @@ class BD4D {
 	 * Send the user a message.
 	 *
 	 * @param string $recipient              User's email address.
+	 * @param string $subject                Subject line.
+	 * @param string $body                   Message text.
 	 */
-	public static function send_confirmation_message( $recipient ) {
-		wp_mail( $recipient, 'Thank you for reaching out to A Better Deal for Data', 'We appreciate your interest.' ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_mail_wp_mail
+	public static function send_confirmation_message( $recipient, $subject, $body ) {
+		wp_mail( $recipient, $subject, $body ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_mail_wp_mail
 	}
 
 	/**
-	 * Get the template part in an output buffer and return it
+	 * Generate the message text.
+	 * 
+	 * The variables aren't "unused" -- they're in scope for the include() call.
+	 *
+	 * @param string $comment                User's comment.
+	 * @param string $newsletter             User opted in to newsletter.
+	 * @param string $supporter              User opted in as supporter.
+	 */
+	public static function message_body( $comment, $newsletter, $supporter ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
+		ob_start();
+		include dirname( __DIR__ ) . '/template-parts/auto-reply.php';
+		return trim( ob_get_clean() );
+	}
+
+
+	/**
+	 * Get the template part in an output buffer and return it.
 	 *
 	 * @param string $template_name Template file name.
 	 */
