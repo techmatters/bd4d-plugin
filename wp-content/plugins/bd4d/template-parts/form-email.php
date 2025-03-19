@@ -43,7 +43,7 @@
 		<div class="signup-input wide">
 			<label for="inline-subscribe-supporter">
 				<input id="inline-subscribe-supporter" disabled type="checkbox" name="supporter" value="true" />
-				Tell me more about the Coalition of the Willing!
+				Yes! I agree to be publicly acknowledged as a supporter of the Better Deal for Data.
 			</label>
 		</div>
 
