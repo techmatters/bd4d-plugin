@@ -230,9 +230,12 @@ class BD4D {
 		$newsletter = ! empty( $_POST['newsletter'] );
 		$supporter  = ! empty( $_POST['supporter'] );
 
+		$subject = 'Welcome to a Better Deal for Data!';
+
 		$result = self::add( $email, $first_name, $last_name, $affiliation, $source, $message, $newsletter, $supporter );
+		$body   = self::message_body( $email, $message, $newsletter, $supporter );
 		if ( self::SEND_SUCCESS === $result ) {
-			self::send_confirmation_message( $email );
+			self::send_confirmation_message( $email, $subject, $body );
 			wp_send_json_success();
 		}
 
@@ -248,10 +251,25 @@ class BD4D {
 	 * Send the user a message.
 	 *
 	 * @param string $recipient              User's email address.
+	 * @param string $subject                Subject line.
+	 * @param string $body                   Message text.
 	 */
-	public static function send_confirmation_message( $recipient ) {
-		wp_mail( $recipient, 'Thank you for reaching out to A Better Deal for Data', 'We appreciate your interest.' ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_mail_wp_mail
+	public static function send_confirmation_message( $recipient, $subject, $body ) {
+		wp_mail( $recipient, $subject, $body ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_mail_wp_mail
 	}
+
+	/**
+	 * Generate the message text
+	 *
+	 * @param string $email                  User's email address.
+	 * @param string $comment                User's comment.
+	 * @param string $newsletter             User opted in to newsletter.
+	 * @param string $supporter              User opted in as supporter.
+	 */
+	public static function message_body( $email, $comment, $newsletter, $supporter ) {
+		return "hi mom [$email, $comment, $newsletter, $supporter";
+	}
+
 
 	/**
 	 * Get the template part in an output buffer and return it
