@@ -53,6 +53,7 @@
 			<input type="submit" class="signup g-rec≈ptcha" value="Send Message" />
 		</div>
 	</div>
+	<div class="error-message"></div>
 	<div class="message hidden">
 		<p>Thank you for taking the time to visit A Better Deal for Data.</p>
 
