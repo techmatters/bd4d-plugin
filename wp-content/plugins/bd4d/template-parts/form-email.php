@@ -23,7 +23,7 @@
 		</div>
 		<div class="signup-input wide">
 			<label for="inline-subscribe-source">How did you hear about A Better Deal For Data?</label>
-			<select id="inline-subscribe-source" name="source">
+			<select id="inline-subscribe-source" name="source" multiple>
 				<option value="">Select one</option>
 				<?php foreach ( BD4D::SOURCES as $value => $label ) : ?>
 					<option value="<?php echo esc_attr( $value ); ?>"><?php echo esc_html( $label ); ?></option>
