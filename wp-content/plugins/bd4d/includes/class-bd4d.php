@@ -41,7 +41,7 @@ class BD4D {
 	 * Add actions and filters.
 	 */
 	public static function hooks() {
-		add_shortcode( 'contact-form', [ __CLASS__, 'render_email_form' ] );
+		add_shortcode( 'bd4d-contact-form', [ __CLASS__, 'render_email_form' ] );
 		add_action( 'wp_ajax_nopriv_send_message', [ __CLASS__, 'send_message' ] );
 		add_action( 'wp_ajax_send_message', [ __CLASS__, 'send_message' ] );
 		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'enqueue_scripts' ] );
