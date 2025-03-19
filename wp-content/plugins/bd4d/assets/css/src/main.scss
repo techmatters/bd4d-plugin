@@ -48,8 +48,8 @@ div.form-fields {
 	grid-gap: 0.7em;
 
 	div.signup-input {
-		input[type='email'],
-		input[type='text'],
+		input[type="email"],
+		input[type="text"],
 		select,
 		textarea {
 			width: 100%;
@@ -95,11 +95,11 @@ div.form-fields {
 			font-weight: bold;
 		}
 
-		input[type='email'] {
+		input[type="email"] {
 			width: 100%;
 		}
 
-		input[type='submit'] {
+		input[type="submit"] {
 			font-weight: bold;
 			background-color: var(--accent);
 			border-radius: 4px;
