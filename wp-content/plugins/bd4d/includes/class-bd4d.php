@@ -222,7 +222,7 @@ class BD4D {
 					$item = trim( sanitize_text_field( wp_unslash( $data ) ) );
 					return array_key_exists( $item, self::SOURCES ) ? $item : '';
 				},
-				$_POST['source'] 
+				$_POST['source']  // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			)
 		);
 
