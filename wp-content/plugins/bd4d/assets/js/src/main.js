@@ -10,11 +10,13 @@ window.bd4d = {
 	processSubscription: function( event ) {
 		event.preventDefault();
 
+		const emailAddress = event.target.querySelector( 'input[name="email"]' ).value.trim();
+
 		let data = {
 			_ajax_nonce: localize._ajax_nonce,
 			action: 'send_message',
 			token: document.getElementById( 'g-recaptcha-response' ).value,
-			email: event.target.querySelector( 'input[name="email"]' ).value
+			email: emailAddress
 		};
 
 		const firstName = event.target.querySelector( 'input[name="first_name"]' );
