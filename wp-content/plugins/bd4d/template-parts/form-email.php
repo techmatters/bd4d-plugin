@@ -54,12 +54,15 @@
 		</div>
 	</div>
 	<div class="message hidden">
-	<p>Thank you for joining us—we’re excited to include you in A Better Deal for Data!</p>
+		<p>Thank you for taking the time to visit A Better Deal for Data.</p>
 
-	<p>If you’ve opted in to receive email updates from Better Deal for Data, we look forward to sharing occasional program announcements, events, and new posts and publications.</p>
+		<p>We’re excited for your interest in the movement to unlock the full potential of data to serve society!</p>
 
-	<p>And, if you requested more information on our Coalition of the Willing, and included your email address, we will reach out to you directly within three business days.</p>
+		<p class="no-email hidden">We’ve received your comments, and welcome any additional ideas or questions. If you choose to sign up for email updates in the future, please send us a message at <a href="mailto:info@bd4d.org">info@bd4d.org</a>.</p>
 
-	<p>More questions? Please email us at <a href="mailto:info@bd4d.org">info@bd4d.org</a>.</p>
+		<p class="no-email hidden">The latest news will always be on our website, and we look forward to your next visit!</p>
+
+		<p class="yes-email hidden">We’ve received your information, so please watch your inbox for a quick confirmation. We look forward to keeping you updated as our community grows! If you have additional ideas, questions, or a data story to share, please send us a message at <a href="mailto:info@bd4d.org">info@bd4d.org</a>.</p>
+
 	</div>
 </form>
