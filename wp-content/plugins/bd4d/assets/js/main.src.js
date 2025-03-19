@@ -80,7 +80,7 @@ window.bd4d = {
 						// 4 is a JSON parsing error.
 						errorMessage += ` (${res?.data?.error_message})`;
 					}
-					event.target.querySelector( '.message' ).textContent = errorMessage;
+					event.target.querySelector( '.error-message' ).textContent = errorMessage;
 
 					// Reset the CAPTCHA after a failure.
 					window.bd4d.gcaptchaHandler();
