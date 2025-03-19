@@ -1,20 +1,20 @@
 window.bd4d = {
 	gcaptchaHandler: function() {
-		grecaptcha
-			.execute( localize.sitekey, { action: 'validate_captcha' } )
-			.then( function( token ) {
-				document.getElementById( 'g-recaptcha-response' ).value = token;
-			} );
+		grecaptcha.execute( localize.sitekey, { action: 'validate_captcha' } ).then( function( token ) {
+			document.getElementById( 'g-recaptcha-response' ).value = token;
+		} );
 	},
 
 	processSubscription: function( event ) {
 		event.preventDefault();
 
+		const emailAddress = event.target.querySelector( 'input[name="email"]' ).value.trim();
+
 		let data = {
 			_ajax_nonce: localize._ajax_nonce,
 			action: 'send_message',
 			token: document.getElementById( 'g-recaptcha-response' ).value,
-			email: event.target.querySelector( 'input[name="email"]' ).value
+			email: emailAddress
 		};
 
 		const firstName = event.target.querySelector( 'input[name="first_name"]' );
@@ -38,7 +38,7 @@ window.bd4d = {
 		}
 
 		if ( source ) {
-			data.source = [ ...source.selectedOptions ].map( o => o.value );
+			data.source = [ ...source.selectedOptions ].map( ( o ) => o.value );
 		}
 
 		if ( message ) {
@@ -57,13 +57,22 @@ window.bd4d = {
 			type: 'POST',
 			url: localize._ajax_url,
 			data: data,
-			success: res => {
+			success: ( res ) => {
 				if ( true === res.success ) {
 					jQuery( event.target.querySelector( '.form-fields' ) ).slideUp();
 					document
-						.querySelector( '#joinbd4dnet .et_pb_text_inner' )
-						.classList.add( 'hidden' );
+						.querySelectorAll( '#joinbd4dnet .et_pb_text_inner,#joinbd4dnet .form-fields' )
+						.forEach( ( item ) => item.classList.remove( 'hidden' ) );
 					event.target.querySelector( '.message' ).classList.remove( 'hidden' );
+					if ( emailAddress ) {
+						event.target
+							.querySelectorAll( '.message .yes-email' )
+							.forEach( ( item ) => item.classList.remove( 'hidden' ) );
+					} else {
+						event.target
+							.querySelectorAll( '.message .no-email' )
+							.forEach( ( item ) => item.classList.remove( 'hidden' ) );
+					}
 				} else {
 					let errorMessage = localize.error_codes[res?.data?.error_code];
 					if ( 4 === res?.data?.error_code ) {
@@ -96,19 +105,10 @@ window.bd4d = {
 		const subscribeForm = document.getElementById( 'inline-subscribe' );
 
 		if ( subscribeForm ) {
-			window.bd4d.emailField = document.getElementById(
-				'inline-subscribe-email'
-			);
-			window.bd4d.emailCheckbox = document.getElementById(
-				'inline-subscribe-newsletter'
-			);
-			window.bd4d.supporterCheckbox = document.getElementById(
-				'inline-subscribe-supporter'
-			);
-			window.bd4d.emailField.addEventListener(
-				'input',
-				window.bd4d.emailFieldHandler
-			);
+			window.bd4d.emailField = document.getElementById( 'inline-subscribe-email' );
+			window.bd4d.emailCheckbox = document.getElementById( 'inline-subscribe-newsletter' );
+			window.bd4d.supporterCheckbox = document.getElementById( 'inline-subscribe-supporter' );
+			window.bd4d.emailField.addEventListener( 'input', window.bd4d.emailFieldHandler );
 
 			subscribeForm.addEventListener( 'submit', window.bd4d.processSubscription );
 			if ( window.grecaptcha ) {
