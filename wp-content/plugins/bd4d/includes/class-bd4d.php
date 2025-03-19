@@ -18,7 +18,6 @@ class BD4D {
 	const SEND_ERROR        = 3;
 	const JSON_ERROR        = 4;
 	const NO_CONTACT_FOUND  = 5;
-	const MISSING_EMAIL     = 6;
 	const RECAPTCHA_MISSING = 7;
 	const RECAPTCHA_FAILED  = 8;
 	const NONCE_FAILED      = 9;
@@ -66,7 +65,6 @@ class BD4D {
 				'error_codes' => [
 					self::SEND_ERROR        => 'Unable to send message',
 					self::JSON_ERROR        => 'Unable to parse JSON result.',
-					self::MISSING_EMAIL     => 'Please supply an email address',
 					self::RECAPTCHA_MISSING => 'The ReCATCHA token was missing.',
 					self::RECAPTCHA_FAILED  => 'ReCAPTCHA could not validate you are a human.',
 					self::NONCE_FAILED      => 'WordPress could not validate you are a human.',
@@ -136,10 +134,6 @@ class BD4D {
 	 * @param boolean $supporter          Whether or not to identify the user as a supporter.
 	 */
 	public static function add( $email, $first_name = false, $last_name = false, $affiliation = false, $source = false, $message = false, $newsletter = false, $supporter = false ) {
-		if ( ! $email ) {
-			return self::MISSING_EMAIL;
-		}
-
 		$data = [ 'fields' => [ 'Email Address' => $email ] ];
 		if ( $first_name ) {
 			$data['fields']['First Name'] = $first_name;
