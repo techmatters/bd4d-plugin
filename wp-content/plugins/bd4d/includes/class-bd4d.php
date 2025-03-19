@@ -275,7 +275,7 @@ class BD4D {
 
 
 	/**
-	 * Get the template part in an output buffer and return it
+	 * Get the template part in an output buffer and return it.
 	 *
 	 * @param string $template_name Template file name.
 	 */
