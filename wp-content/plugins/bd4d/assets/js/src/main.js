@@ -1,10 +1,8 @@
 window.bd4d = {
 	gcaptchaHandler: function() {
-		grecaptcha
-			.execute( localize.sitekey, { action: 'validate_captcha' } )
-			.then( function( token ) {
-				document.getElementById( 'g-recaptcha-response' ).value = token;
-			} );
+		grecaptcha.execute( localize.sitekey, { action: 'validate_captcha' } ).then( function( token ) {
+			document.getElementById( 'g-recaptcha-response' ).value = token;
+		} );
 	},
 
 	processSubscription: function( event ) {
@@ -40,7 +38,7 @@ window.bd4d = {
 		}
 
 		if ( source ) {
-			data.source = [ ...source.selectedOptions ].map( o => o.value );
+			data.source = [ ...source.selectedOptions ].map( ( o ) => o.value );
 		}
 
 		if ( message ) {
@@ -107,19 +105,10 @@ window.bd4d = {
 		const subscribeForm = document.getElementById( 'inline-subscribe' );
 
 		if ( subscribeForm ) {
-			window.bd4d.emailField = document.getElementById(
-				'inline-subscribe-email'
-			);
-			window.bd4d.emailCheckbox = document.getElementById(
-				'inline-subscribe-newsletter'
-			);
-			window.bd4d.supporterCheckbox = document.getElementById(
-				'inline-subscribe-supporter'
-			);
-			window.bd4d.emailField.addEventListener(
-				'input',
-				window.bd4d.emailFieldHandler
-			);
+			window.bd4d.emailField = document.getElementById( 'inline-subscribe-email' );
+			window.bd4d.emailCheckbox = document.getElementById( 'inline-subscribe-newsletter' );
+			window.bd4d.supporterCheckbox = document.getElementById( 'inline-subscribe-supporter' );
+			window.bd4d.emailField.addEventListener( 'input', window.bd4d.emailFieldHandler );
 
 			subscribeForm.addEventListener( 'submit', window.bd4d.processSubscription );
 			if ( window.grecaptcha ) {
