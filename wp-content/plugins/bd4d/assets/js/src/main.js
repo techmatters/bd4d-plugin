@@ -59,13 +59,22 @@ window.bd4d = {
 			type: 'POST',
 			url: localize._ajax_url,
 			data: data,
-			success: res => {
+			success: ( res ) => {
 				if ( true === res.success ) {
 					jQuery( event.target.querySelector( '.form-fields' ) ).slideUp();
 					document
-						.querySelector( '#joinbd4dnet .et_pb_text_inner' )
-						.classList.add( 'hidden' );
+						.querySelectorAll( '#joinbd4dnet .et_pb_text_inner,#joinbd4dnet .form-fields' )
+						.forEach( ( item ) => item.classList.remove( 'hidden' ) );
 					event.target.querySelector( '.message' ).classList.remove( 'hidden' );
+					if ( emailAddress ) {
+						event.target
+							.querySelectorAll( '.message .yes-email' )
+							.forEach( ( item ) => item.classList.remove( 'hidden' ) );
+					} else {
+						event.target
+							.querySelectorAll( '.message .no-email' )
+							.forEach( ( item ) => item.classList.remove( 'hidden' ) );
+					}
 				} else {
 					let errorMessage = localize.error_codes[res?.data?.error_code];
 					if ( 4 === res?.data?.error_code ) {
