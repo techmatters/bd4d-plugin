@@ -16,7 +16,7 @@
 			<label class="screen-reader" for="inline-subscribe-last-name">Last Name</label><input id="inline-subscribe-last-name" type="text" name="last_name" placeholder="Last name *"  required="required" />
 		</div>
 		<div class="signup-input">
-			<label class="screen-reader" for="inline-subscribe-email">Email address</label><input id="inline-subscribe-email" type="email" name="email" placeholder="Email address *" required="required" />
+			<label class="screen-reader" for="inline-subscribe-email">Email address</label><input id="inline-subscribe-email" type="email" name="email" placeholder="Email address" />
 		</div>
 		<div class="signup-input">
 			<label class="screen-reader" for="inline-subscribe-affiliation">Affiliation</label><input id="inline-subscribe-affiliation" type="text" name="affiliation" autocomplete="organization" placeholder="Affiliation" />
