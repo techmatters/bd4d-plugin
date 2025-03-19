@@ -1,6 +1,6 @@
 <?php
 /**
- * The template for displaying inline newsletter forms.
+ * The template for displaying inline contact forms.
  *
  * @package LandPKS
  * @since   1.0.0
