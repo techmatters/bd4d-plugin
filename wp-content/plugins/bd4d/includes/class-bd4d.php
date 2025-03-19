@@ -233,7 +233,7 @@ class BD4D {
 		$subject = 'Welcome to a Better Deal for Data!';
 
 		$result = self::add( $email, $first_name, $last_name, $affiliation, $source, $message, $newsletter, $supporter );
-		$body   = self::message_body( $email, $message, $newsletter, $supporter );
+		$body   = self::message_body( $message, $newsletter, $supporter );
 		if ( self::SEND_SUCCESS === $result ) {
 			self::send_confirmation_message( $email, $subject, $body );
 			wp_send_json_success();
@@ -259,15 +259,18 @@ class BD4D {
 	}
 
 	/**
-	 * Generate the message text
+	 * Generate the message text.
+	 * 
+	 * The variables aren't "unused" -- they're in scope for the include() call.
 	 *
-	 * @param string $email                  User's email address.
 	 * @param string $comment                User's comment.
 	 * @param string $newsletter             User opted in to newsletter.
 	 * @param string $supporter              User opted in as supporter.
 	 */
-	public static function message_body( $email, $comment, $newsletter, $supporter ) {
-		return "hi mom [$email, $comment, $newsletter, $supporter";
+	public static function message_body( $comment, $newsletter, $supporter ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
+		ob_start();
+		include dirname( __DIR__ ) . '/template-parts/auto-reply.php';
+		return trim( ob_get_clean() );
 	}
 
 
