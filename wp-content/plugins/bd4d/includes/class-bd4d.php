@@ -196,8 +196,7 @@ class BD4D {
 			$id = $result['id'];
 			if ( $id ) {
 				if ( $result['fields']['First Name'] === $first_name &&
-				$result['fields']['Last Name'] === $last_name &&
-				$result['fields']['Email Address'] === $email
+				$result['fields']['Last Name'] === $last_name
 				) {
 					return self::SEND_SUCCESS;
 				}
