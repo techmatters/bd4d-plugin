@@ -62,7 +62,7 @@ window.bd4d = {
 					jQuery( event.target.querySelector( '.form-fields' ) ).slideUp();
 					document
 						.querySelectorAll( '#joinbd4dnet .et_pb_text_inner,#joinbd4dnet .form-fields' )
-						.forEach( ( item ) => item.classList.remove( 'hidden' ) );
+						.forEach( ( item ) => item.classList.add( 'hidden' ) );
 					event.target.querySelector( '.message' ).classList.remove( 'hidden' );
 					if ( emailAddress ) {
 						event.target

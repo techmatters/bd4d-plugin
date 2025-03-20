@@ -176,7 +176,7 @@ class BD4D {
 		}
 		
 		$data['fields']['Email-Opted In?'] = $newsletter;
-		$data['fields']['CotW-OptedIn?']   = $supporter;
+		$data['fields']['CotW-Opted In?']  = $supporter;
 
 		$raw_result = wp_remote_post(
 			self::BASE_URL . '/' . self::base_id() . '/' . self::table_id(),
@@ -196,8 +196,7 @@ class BD4D {
 			$id = $result['id'];
 			if ( $id ) {
 				if ( $result['fields']['First Name'] === $first_name &&
-				$result['fields']['Last Name'] === $last_name &&
-				$result['fields']['Email Address'] === $email
+				$result['fields']['Last Name'] === $last_name
 				) {
 					return self::SEND_SUCCESS;
 				}
@@ -251,10 +250,15 @@ class BD4D {
 		$subject = 'Welcome to a Better Deal for Data!';
 
 		$result = self::add( $email, $first_name, $last_name, $affiliation, $source, $message, $newsletter, $supporter );
-		$body   = self::message_body( $message, $newsletter, $supporter );
-		if ( self::SEND_SUCCESS === $result ) {
-			self::send_confirmation_message( $email, $subject, $body );
-			wp_send_json_success();
+		if ( $email ) {
+			$body = self::message_body( $message, $newsletter, $supporter );
+			if ( self::SEND_SUCCESS === $result ) {
+				self::send_confirmation_message( $email, $subject, $body );
+				wp_send_json_success();
+			}
+		} elseif ( self::SEND_SUCCESS === $result ) {
+				wp_send_json_success();
+				return;
 		}
 
 		$data = [ 'error_code' => $result ];
