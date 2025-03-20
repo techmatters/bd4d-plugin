@@ -176,7 +176,7 @@ class BD4D {
 		}
 		
 		$data['fields']['Email-Opted In?'] = $newsletter;
-		$data['fields']['CotW-OptedIn?']   = $supporter;
+		$data['fields']['CotW-Opted In?']  = $supporter;
 
 		$raw_result = wp_remote_post(
 			self::BASE_URL . '/' . self::base_id() . '/' . self::table_id(),
