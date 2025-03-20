@@ -107,3 +107,14 @@ div.form-fields {
 		}
 	}
 }
+
+/* override divi styles */
+html body {
+	.et_pb_post {
+		margin-bottom: 0;
+	}
+
+	sup {
+		font-size: 11px;
+	}
+}
