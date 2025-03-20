@@ -93,3 +93,11 @@ div.form-fields div.signup-input .signup:hover {
   border-radius: 4px;
   margin-top: 1em;
 }
+
+/* override divi styles */
+html body .et_pb_post {
+  margin-bottom: 0;
+}
+html body sup {
+  font-size: 12px;
+}
