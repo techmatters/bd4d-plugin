@@ -120,6 +120,30 @@ class BD4D {
 		return $list_id;
 	}
 
+	/**
+	 * Determine if all needed configuration values are set
+	 *
+	 * @param array $errors  Array of unconfigured values.
+	 * @return boolean       If needed configuration values are set.
+	 */
+	public static function is_configured( &$errors ) {
+		$items = [
+			'Airtable Token'       => 'bd4d_airtable_token',
+			'Airtable Table ID'    => 'bd4d_airtable_table_id',
+			'Airtable Base ID'     => 'bd4d_airtable_base_id',
+			'ReCAPTCHA Site Key'   => 'bd4d_recaptcha_site_key',
+			'ReCAPTCHA Secret Key' => 'bd4d_recaptcha_secret_key',
+		];
+		foreach ( $items as $label => $key ) {
+			$value = get_option( $key );
+			if ( ! $value ) {
+				$errors[] = $label;
+			}
+		}
+
+		return count( $errors ) === 0;
+	}
+
 
 	/**
 	 * Add the user to a Airtable table.
@@ -287,6 +311,11 @@ class BD4D {
 	 * @return string
 	 */
 	public static function render_email_form() {
+		$errors = [];
+		if ( ! self::is_configured( $errors ) ) {
+			return 'Incomplete configuration. Missing: ' . join( ', ', $errors );
+		}
+
 		return self::get_template_part( 'template-parts/form-email.php' );
 	}
 }
