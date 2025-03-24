@@ -84,6 +84,8 @@ window.bd4d = {
 
 					// Reset the CAPTCHA after a failure.
 					window.bd4d.gcaptchaHandler();
+
+					submitButton.removeAttribute( 'disabled' );
 				}
 			}
 		} );
