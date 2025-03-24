@@ -110,7 +110,8 @@ div.form-fields {
 
 /* override divi styles */
 html body {
-	.et_pb_post {
+	// sidebar margins
+	.et_pb_ajax_pagination_container.et_pb_post {
 		margin-bottom: 0;
 	}
 
