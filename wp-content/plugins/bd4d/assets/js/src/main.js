@@ -8,21 +8,23 @@ window.bd4d = {
 	processSubscription: function( event ) {
 		event.preventDefault();
 
-		const emailAddress = event.target.querySelector( 'input[name="email"]' ).value.trim();
-
 		let data = {
 			_ajax_nonce: localize._ajax_nonce,
 			action: 'send_message',
-			token: document.getElementById( 'g-recaptcha-response' ).value,
-			email: emailAddress
+			token: document.getElementById( 'g-recaptcha-response' ).value
 		};
 
 		const firstName = event.target.querySelector( 'input[name="first_name"]' );
 		const lastName = event.target.querySelector( 'input[name="last_name"]' );
+		const emailAddress = event.target.querySelector( 'input[name="email"]' ).value.trim();
 		const affiliation = event.target.querySelector( 'input[name="affiliation"]' );
 		const message = event.target.querySelector( 'textarea[name="message"]' );
 		const newsletter = event.target.querySelector( 'input[name="newsletter"]' );
 		const supporter = event.target.querySelector( 'input[name="supporter"]' );
+
+		if ( emailAddress ) {
+			data.email = emailAddress.value;
+		}
 
 		if ( firstName ) {
 			data.first_name = firstName.value;
