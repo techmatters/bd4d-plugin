@@ -37,6 +37,7 @@ html body .hidden {
 }
 
 div.form-fields label,
+div.error-message,
 div.message,
 div.message a {
   color: white;
@@ -92,6 +93,9 @@ div.form-fields div.signup-input .signup:hover {
   background-color: var(--accent);
   border-radius: 4px;
   margin-top: 1em;
+}
+.newsletter-subscribe.email-only input[type=submit][disabled=disabled] {
+  opacity: 0.5;
 }
 
 /* override divi styles */
