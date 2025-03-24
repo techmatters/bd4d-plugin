@@ -26,16 +26,6 @@ class BD4D {
 	const FIELD_NAME = 'newsletter_form';
 	const NONCE_KEY  = 'newsletter_form_nonce';
 
-	const SOURCES = [
-		'Word of Mouth'             => 'Word of mouth',
-		'Tech Matters'              => 'Tech Matters',
-		'Online Search'             => 'Online search',
-		'Event'                     => 'Event',
-		'Social Media'              => 'Social media',
-		'Article, Blog, or Podcast' => 'Aricle, blog, or podcast',
-		'Other'                     => 'Other',
-	];
-
 	/**
 	 * Add actions and filters.
 	 */
@@ -152,12 +142,11 @@ class BD4D {
 	 * @param string  $first_name         User's first name.
 	 * @param string  $last_name          User's last name.
 	 * @param string  $affiliation        User's company or organization.
-	 * @param string  $source             User's referral source.
 	 * @param string  $message            User's message.
 	 * @param boolean $newsletter         Whether or not to subscribe to the newsletter.
 	 * @param boolean $supporter          Whether or not to identify the user as a supporter.
 	 */
-	public static function add( $email, $first_name = false, $last_name = false, $affiliation = false, $source = false, $message = false, $newsletter = false, $supporter = false ) {
+	public static function add( $email, $first_name = false, $last_name = false, $affiliation = false, $message = false, $newsletter = false, $supporter = false ) {
 		$data = [ 'fields' => [ 'Email Address' => $email ] ];
 		if ( $first_name ) {
 			$data['fields']['First Name'] = $first_name;
@@ -167,9 +156,6 @@ class BD4D {
 		}
 		if ( $affiliation ) {
 			$data['fields']['Affiliation'] = $affiliation;
-		}
-		if ( $source ) {
-			$data['fields']['Source'] = $source;
 		}
 		if ( $message ) {
 			$data['fields']['Form Comments'] = $message;
@@ -232,24 +218,13 @@ class BD4D {
 		$last_name   = empty( $_POST['last_name'] ) ? '' : trim( sanitize_text_field( wp_unslash( $_POST['last_name'] ) ) );
 		$affiliation = empty( $_POST['affiliation'] ) ? '' : trim( sanitize_text_field( wp_unslash( $_POST['affiliation'] ) ) );
 
-		// Sanitize each item in the array. Confirm it's in the list of allowed items.
-		$source = empty( $_POST['source'] ) ? '' : array_filter(
-			array_map(
-				function ( $data ) {
-					$item = trim( sanitize_text_field( wp_unslash( $data ) ) );
-					return array_key_exists( $item, self::SOURCES ) ? $item : '';
-				},
-				$_POST['source']  // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-			)
-		);
-
 		$message    = empty( $_POST['message'] ) ? '' : trim( sanitize_text_field( wp_unslash( $_POST['message'] ) ) );
 		$newsletter = ! empty( $_POST['newsletter'] );
 		$supporter  = ! empty( $_POST['supporter'] );
 
 		$subject = 'Welcome to a Better Deal for Data!';
 
-		$result = self::add( $email, $first_name, $last_name, $affiliation, $source, $message, $newsletter, $supporter );
+		$result = self::add( $email, $first_name, $last_name, $affiliation, $message, $newsletter, $supporter );
 		if ( $email ) {
 			$body = self::message_body( $message, $newsletter, $supporter );
 			if ( self::SEND_SUCCESS === $result ) {
