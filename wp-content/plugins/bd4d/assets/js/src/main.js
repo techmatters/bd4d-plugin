@@ -50,6 +50,9 @@ window.bd4d = {
 			data.supporter = supporter.value;
 		}
 
+		const submitButton = document.querySelector( 'input[type="submit"]' );
+		submitButton.setAttribute( 'disabled', 'disabled' );
+
 		jQuery.ajax( {
 			type: 'POST',
 			url: localize._ajax_url,
