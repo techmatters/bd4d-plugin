@@ -50,6 +50,9 @@ window.bd4d = {
 			data.supporter = supporter.value;
 		}
 
+		const submitButton = document.querySelector( 'input[type="submit"]' );
+		submitButton.setAttribute( 'disabled', 'disabled' );
+
 		jQuery.ajax( {
 			type: 'POST',
 			url: localize._ajax_url,
@@ -81,6 +84,8 @@ window.bd4d = {
 
 					// Reset the CAPTCHA after a failure.
 					window.bd4d.gcaptchaHandler();
+
+					submitButton.removeAttribute( 'disabled' );
 				}
 			}
 		} );

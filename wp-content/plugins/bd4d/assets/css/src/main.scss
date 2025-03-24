@@ -37,6 +37,7 @@ html body .hidden {
 }
 
 div.form-fields label,
+div.error-message,
 div.message,
 div.message a {
 	color: white;
@@ -104,6 +105,10 @@ div.form-fields {
 			background-color: var(--accent);
 			border-radius: 4px;
 			margin-top: 1em;
+
+			&[disabled="disabled"] {
+				opacity: 0.5;
+			}
 		}
 	}
 }
