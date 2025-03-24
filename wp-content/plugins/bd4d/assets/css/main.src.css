@@ -95,7 +95,7 @@ div.form-fields div.signup-input .signup:hover {
 }
 
 /* override divi styles */
-html body .et_pb_ajax_pagination_container.et_pb_post {
+html body .et_pb_ajax_pagination_container .et_pb_post {
   margin-bottom: 0;
 }
 html body sup {
