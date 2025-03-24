@@ -105,6 +105,10 @@ div.form-fields {
 			background-color: var(--accent);
 			border-radius: 4px;
 			margin-top: 1em;
+
+			&[disabled="disabled"] {
+				opacity: 0.5;
+			}
 		}
 	}
 }
