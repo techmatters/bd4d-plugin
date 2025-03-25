@@ -50,6 +50,11 @@ window.bd4d = {
 			data.supporter = supporter.value;
 		}
 
+		if ( ! emailAddress && ! message ) {
+			event.target.querySelector( '.error-message' ).textContent = localize.error_codes[6];
+			return;
+		}
+
 		const submitButton = document.querySelector( 'input[type="submit"]' );
 		submitButton.setAttribute( 'disabled', 'disabled' );
 
