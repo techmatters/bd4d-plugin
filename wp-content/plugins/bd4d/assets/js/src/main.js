@@ -14,32 +14,32 @@ window.bd4d = {
 			token: document.getElementById( 'g-recaptcha-response' ).value
 		};
 
-		const firstName = event.target.querySelector( 'input[name="first_name"]' );
-		const lastName = event.target.querySelector( 'input[name="last_name"]' );
+		const firstName = event.target.querySelector( 'input[name="first_name"]' ).value.trim();
+		const lastName = event.target.querySelector( 'input[name="last_name"]' ).value.trim();
 		const emailAddress = event.target.querySelector( 'input[name="email"]' ).value.trim();
-		const affiliation = event.target.querySelector( 'input[name="affiliation"]' );
-		const message = event.target.querySelector( 'textarea[name="message"]' );
+		const affiliation = event.target.querySelector( 'input[name="affiliation"]' ).value.trim();
+		const message = event.target.querySelector( 'textarea[name="message"]' ).value.trim();
 		const newsletter = event.target.querySelector( 'input[name="newsletter"]' );
 		const supporter = event.target.querySelector( 'input[name="supporter"]' );
 
 		if ( emailAddress ) {
-			data.email = emailAddress.value;
+			data.email = emailAddress;
 		}
 
 		if ( firstName ) {
-			data.first_name = firstName.value;
+			data.first_name = firstName;
 		}
 
 		if ( lastName ) {
-			data.last_name = lastName.value;
+			data.last_name = lastName;
 		}
 
 		if ( affiliation ) {
-			data.affiliation = affiliation.value;
+			data.affiliation = affiliation;
 		}
 
 		if ( message ) {
-			data.message = message.value;
+			data.message = message;
 		}
 
 		if ( newsletter.checked ) {
