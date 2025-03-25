@@ -57,7 +57,7 @@ class BD4D {
 					self::SEND_ERROR        => 'Unable to send message',
 					self::JSON_ERROR        => 'Unable to parse JSON result.',
 					self::RECAPTCHA_MISSING => 'The ReCATCHA token was missing.',
-					self::FORM_INCOMPLETE   => 'Enter an email address or a message',
+					self::FORM_INCOMPLETE   => 'Enter an email address or a message.',
 					self::RECAPTCHA_FAILED  => 'ReCAPTCHA could not validate you are a human.',
 					self::NONCE_FAILED      => 'WordPress could not validate you are a human.',
 				],
