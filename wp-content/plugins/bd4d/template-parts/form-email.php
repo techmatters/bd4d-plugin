@@ -54,7 +54,7 @@
 
 		<p class="no-email hidden">The latest news will always be on our website, and we look forward to your next visit!</p>
 
-		<p class="yes-email hidden">We’ve received your information, so please watch your inbox for a quick confirmation. We look forward to keeping you updated as our community grows! If you have additional ideas, questions, or a data story to share, please send us a message at <a href="mailto:info@bd4d.org">info@bd4d.org</a>.</p>
+		<p class="yes-email hidden">We’ve received your information. Please watch your inbox for a quick confirmation. We look forward to keeping you updated as our community grows! If you have additional ideas, questions, or a data story to share, please send us a message at <a href="mailto:info@bd4d.org">info@bd4d.org</a>.</p>
 
 	</div>
 </form>
