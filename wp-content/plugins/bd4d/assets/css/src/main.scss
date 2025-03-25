@@ -43,6 +43,10 @@ div.message a {
 	color: white;
 }
 
+.has-error {
+	outline: 2px solid red;
+}
+
 div.form-fields {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
