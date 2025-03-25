@@ -67,6 +67,8 @@ window.bd4d = {
 			data: data,
 			success: ( res ) => {
 				if ( true === res.success ) {
+					event.target.querySelector( '.error-message' ).textContent = '';
+
 					jQuery( event.target.querySelector( '.form-fields' ) ).slideUp();
 					document
 						.querySelectorAll( '#joinbd4dnet .et_pb_text_inner,#joinbd4dnet .form-fields' )
