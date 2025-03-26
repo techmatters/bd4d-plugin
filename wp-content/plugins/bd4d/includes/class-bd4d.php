@@ -22,6 +22,7 @@ class BD4D {
 	const RECAPTCHA_MISSING = 7;
 	const RECAPTCHA_FAILED  = 8;
 	const NONCE_FAILED      = 9;
+	const EMAIL_MISSING     = 10;
 
 
 	const FIELD_NAME = 'newsletter_form';
@@ -60,6 +61,7 @@ class BD4D {
 					self::FORM_INCOMPLETE   => 'Enter an email address or a message.',
 					self::RECAPTCHA_FAILED  => 'ReCAPTCHA could not validate you are a human.',
 					self::NONCE_FAILED      => 'WordPress could not validate you are a human.',
+					self::EMAIL_MISSING     => 'Enter an email address.',
 				],
 			]
 		);
