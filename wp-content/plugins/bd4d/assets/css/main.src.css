@@ -109,3 +109,13 @@ html body.single .et_pb_post {
 html body sup {
   font-size: 11px;
 }
+@media (max-width: 980px) {
+  html body header #logo {
+    background-image: url("/wp-content/uploads/2025/03/bd4d.svg");
+    width: 100px;
+    height: 27px;
+    padding-left: 100px;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+}
