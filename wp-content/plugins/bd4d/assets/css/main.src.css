@@ -85,20 +85,20 @@ div.form-fields div.signup-input .signup:hover {
   clear: both;
   margin-bottom: 1em;
 }
-.newsletter-subscribe.email-only label {
+.newsletter-subscribe label {
   display: block;
   font-weight: bold;
 }
-.newsletter-subscribe.email-only input[type=email] {
+.newsletter-subscribe input[type=email] {
   width: 100%;
 }
-.newsletter-subscribe.email-only input[type=submit] {
+.newsletter-subscribe input[type=submit] {
   font-weight: bold;
   background-color: var(--accent);
   border-radius: 4px;
   margin-top: 1em;
 }
-.newsletter-subscribe.email-only input[type=submit][disabled=disabled] {
+.newsletter-subscribe input[type=submit][disabled=disabled] {
   opacity: 0.5;
 }
 
