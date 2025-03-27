@@ -6,6 +6,9 @@ window.bd4d = {
 	},
 
 	processSubscription: function( event ) {
+		const submitButton = document.querySelector( 'input[type="submit"]' );
+		submitButton.setAttribute( 'disabled', 'disabled' );
+
 		event.preventDefault();
 
 		let data = {
@@ -63,9 +66,6 @@ window.bd4d = {
 			event.target.querySelector( '.error-message' ).textContent = localize.error_codes[6];
 			return;
 		}
-
-		const submitButton = document.querySelector( 'input[type="submit"]' );
-		submitButton.setAttribute( 'disabled', 'disabled' );
 
 		jQuery.ajax( {
 			type: 'POST',
