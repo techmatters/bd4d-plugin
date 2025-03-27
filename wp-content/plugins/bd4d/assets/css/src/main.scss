@@ -94,25 +94,23 @@ div.form-fields {
 		margin-bottom: 1em;
 	}
 
-	&.email-only {
-		label {
-			display: block;
-			font-weight: bold;
-		}
+	label {
+		display: block;
+		font-weight: bold;
+	}
 
-		input[type="email"] {
-			width: 100%;
-		}
+	input[type="email"] {
+		width: 100%;
+	}
 
-		input[type="submit"] {
-			font-weight: bold;
-			background-color: var(--accent);
-			border-radius: 4px;
-			margin-top: 1em;
+	input[type="submit"] {
+		font-weight: bold;
+		background-color: var(--accent);
+		border-radius: 4px;
+		margin-top: 1em;
 
-			&[disabled="disabled"] {
-				opacity: 0.5;
-			}
+		&[disabled="disabled"] {
+			opacity: 0.5;
 		}
 	}
 }
