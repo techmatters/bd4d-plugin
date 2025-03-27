@@ -56,6 +56,7 @@ window.bd4d = {
 		if ( ( supporter.checked || newsletter.checked ) & ! emailAddress ) {
 			event.target.querySelectorAll( '#inline-subscribe-email' ).forEach( ( item ) => item.classList.add( 'has-error' ) );
 			event.target.querySelector( '.error-message' ).textContent = localize.error_codes[10];
+			submitButton.removeAttribute( 'disabled' );
 			return;
 		}
 
@@ -64,6 +65,7 @@ window.bd4d = {
 				.querySelectorAll( '#inline-subscribe-email,#inline-subscribe-message' )
 				.forEach( ( item ) => item.classList.add( 'has-error' ) );
 			event.target.querySelector( '.error-message' ).textContent = localize.error_codes[6];
+			submitButton.removeAttribute( 'disabled' );
 			return;
 		}
 
