@@ -19,7 +19,7 @@
 	},
 	"devDependencies": {
 		"@lodder/grunt-postcss": "^3.1.1",
-		"@wordpress/prettier-config": "^4.22.0",
+		"@wordpress/prettier-config": "^4.23.0",
 		"autoprefixer": "^10.4.21",
 		"eslint-config-wordpress": "^2.0.0",
 		"grunt": "^1.6.1",
