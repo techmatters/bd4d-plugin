@@ -8,9 +8,9 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v5
-            - run: |
-                  composer show 
-                  phpcs -v
+            - run: php -v
+            - run: composer install
+            - run: composer show
             - name: WPCS check
               uses: 10up/wpcs-action@stable
               with:
