@@ -3,14 +3,17 @@ name: WPCS check
 on: pull_request
 
 jobs:
-  phpcs:
-      name: WPCS
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v5
-        - name: WPCS check
-          uses: 10up/wpcs-action@stable
-          with:
-            enable_warnings: true
-            standard: 'WordPress-VIP-Go'
-            use_local_config: true
+    phpcs:
+        name: WPCS
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v5
+            - run: |
+                  composer show 
+                  phpcs -v
+            - name: WPCS check
+              uses: 10up/wpcs-action@stable
+              with:
+                  enable_warnings: true
+                  standard: 'WordPress-VIP-Go'
+                  use_local_config: true
