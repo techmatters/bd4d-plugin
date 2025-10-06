@@ -36,6 +36,6 @@
 		"matchdep": "^2.0.0",
 		"sass": "^1.93.0",
 		"stylelint": "^16.24.0",
-		"stylelint-config-standard": "^39.0.0"
+		"stylelint-config-standard": "^39.0.1"
 	}
 }
