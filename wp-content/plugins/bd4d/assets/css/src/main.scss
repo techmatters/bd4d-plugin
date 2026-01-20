@@ -1,7 +1,6 @@
 /* Text meant only for screen readers. */
 .screen-reader {
 	border: 0;
-	clip: rect(1px, 1px, 1px, 1px);
 	clip-path: inset(50%);
 	height: 1px;
 	margin: -1px;
@@ -9,12 +8,11 @@
 	padding: 0;
 	position: absolute;
 	width: 1px;
-	word-wrap: normal !important;
+	overflow-wrap: normal !important;
 }
 
 .screen-reader:focus {
 	background-color: #eee;
-	clip: auto !important;
 	clip-path: none;
 	color: #444;
 	display: block;
@@ -50,7 +48,7 @@ div.message a {
 div.form-fields {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	grid-gap: 0.7em;
+	gap: 0.7em;
 
 	div.signup-input {
 		input[type="email"],
