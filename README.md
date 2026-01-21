@@ -114,19 +114,19 @@ The plugin sends a confirmation email after successful form submission. The emai
 
 ### Email Cases
 
-| Case | Conditions | Greeting | Closing |
-|------|------------|----------|---------|
-| **A** | `adoption = true` (others ignored) | "Hello, and welcome..." | "Many thanks," |
-| **B** | `newsletter = true`, `supporter = false` | "Hello, and thank you..." | "All the best," |
-| **C** | `newsletter = false`, `supporter = true`, `comment = false` | "Hello, and thank you..." | "All the best," |
-| **D** | All other combinations | "Hello, and thank you..." | "All the best," |
+| Case | Newsletter | Supporter | Adoption | Greeting | Closing |
+|------|------------|-----------|----------|----------|---------|
+| **A** | any | any | ✓ | "Hello, and welcome..." | "Many thanks," |
+| **B** | ✓ | ✗ | ✗ | "Hello, and thank you..." | "All the best," |
+| **C** | ✗ | ✓ | ✗ | "Hello, and thank you..." | "All the best," |
+| **D** | ✓ | ✓ | ✗ | "Hello, and thank you..." | "All the best," |
 
 ### Case Details
 
-- **Case A (Adoption):** User wants to learn about adopting BD4D Standard. Gets personalized follow-up promise.
+- **Case A (Adoption):** Takes priority. User wants to learn about adopting BD4D Standard. Gets personalized follow-up promise ("We will contact you personally within the next two business days").
 - **Case B (Newsletter only):** User subscribes to email updates. Gets unsubscribe instructions.
 - **Case C (Supporter only):** User agrees to be listed as public supporter. Gets display permission confirmation.
-- **Case D (Catch-all):** Handles newsletter+supporter, supporter+comment, or neither checked.
+- **Case D (Newsletter + Supporter):** User wants both. Gets combined confirmation with bullet points for both permissions plus unsubscribe instructions.
 
 ### Key File
 
@@ -146,17 +146,36 @@ The plugin sends a confirmation email after successful form submission. The emai
 
 Pressable has **GitHub Integration** configured with **manual deployment triggers**:
 
-1. **Source:** `wp-content/` folder in repo's `main` branch
-2. **Destination:** `htdocs/wp-content/` on Pressable server
+1. **Source:** `wp-content/plugins/bd4d` folder in repo
+2. **Destination:** `htdocs/wp-content/plugins/bd4d` on Pressable server
 3. **Trigger:** Manual - click "Set and Deploy" in Pressable dashboard
-4. **Result:** Plugin appears at `wp-content/plugins/bd4d/` in WordPress
+4. **Result:** Plugin updated, other themes/plugins untouched
 
 ```
 GitHub (main branch)              Pressable
 ─────────────────────             ────────────────────
-wp-content/            ──────►    htdocs/wp-content/
-└── plugins/bd4d/                 └── plugins/bd4d/
+wp-content/plugins/bd4d ──────►   htdocs/wp-content/plugins/bd4d
 ```
+
+### ⚠️ CRITICAL: Deployment Path Configuration
+
+The deployment paths MUST be configured to deploy **only the bd4d plugin**, not the entire `wp-content/` folder.
+
+**Correct Pressable settings:**
+```
+Repository Directory to Deploy From: wp-content/plugins/bd4d
+Deployment Path:                     htdocs/wp-content/plugins/bd4d
+```
+
+**Why this matters:** The server has themes and plugins that are NOT in this git repo:
+
+| On Server (not in git) |
+|------------------------|
+| Divi theme |
+| Divi child theme |
+| autoptimize, cloudflare, divi-pixel, wordpress-seo, etc. |
+
+If you deploy the entire `wp-content/` folder, these will be **permanently deleted**.
 
 ### Deployment Workflow
 
@@ -233,8 +252,9 @@ The staging workflow happens at the **Pressable level** (deploy to staging site 
 ### Notes
 
 - Build tools (Grunt, npm, composer configs) live at repo root but are NOT deployed
-- Only the `wp-content/` folder is deployed to Pressable
+- Only the `wp-content/plugins/bd4d/` folder is deployed to Pressable
 - Built assets must be committed (they're not built on the server)
+- **Never deploy the entire `wp-content/` folder** - it will delete themes and other plugins not in this repo
 
 ---
 *Last updated: Jan 2026*
