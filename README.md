@@ -99,8 +99,12 @@ The plugin writes form submissions to Airtable via the REST API (`https://api.ai
 2. Update `class-bd4d.php`:
    - Add parameter to `add()` method
    - Add field to `$data['fields']` array
-3. If field comes from form: update `form-email.php` and `send_message()` method
-4. Build, commit, deploy
+   - Update `send_message()` to read from `$_POST` and pass to `add()`
+3. If field comes from form:
+   - Update `form-email.php` to add the HTML input
+   - Update `assets/js/src/main.js` to read the input and include it in the AJAX `data` object
+4. Run `npx grunt` to build assets
+5. Commit (including built assets), push, deploy
 
 ### Notes
 
@@ -114,19 +118,21 @@ The plugin sends a confirmation email after successful form submission. The emai
 
 ### Email Cases
 
-| Case | Newsletter | Supporter | Adoption | Greeting | Closing |
-|------|------------|-----------|----------|----------|---------|
-| **A** | any | any | ✓ | "Hello, and welcome..." | "Many thanks," |
-| **B** | ✓ | ✗ | ✗ | "Hello, and thank you..." | "All the best," |
-| **C** | ✗ | ✓ | ✗ | "Hello, and thank you..." | "All the best," |
-| **D** | ✓ | ✓ | ✗ | "Hello, and thank you..." | "All the best," |
+| Case | Newsletter | Supporter | Adoption |
+|------|------------|-----------|----------|
+| **A** | ✓ | ✗ | ✗ |
+| **B** | ✗ | ✓ | ✗ |
+| **C** | ✓ | ✓ | ✗ |
+| **D** | any | any | ✓ |
+| **E** | ✗ | ✗ | ✗ |
 
 ### Case Details
 
-- **Case A (Adoption):** Takes priority. User wants to learn about adopting BD4D Standard. Gets personalized follow-up promise ("We will contact you personally within the next two business days").
-- **Case B (Newsletter only):** User subscribes to email updates. Gets unsubscribe instructions.
-- **Case C (Supporter only):** User agrees to be listed as public supporter. Gets display permission confirmation.
-- **Case D (Newsletter + Supporter):** User wants both. Gets combined confirmation with bullet points for both permissions plus unsubscribe instructions.
+- **Case A (Newsletter only):** User subscribes to email updates. Gets unsubscribe instructions.
+- **Case B (Supporter only):** User agrees to be listed as public supporter. Gets display permission confirmation.
+- **Case C (Newsletter + Supporter):** User wants both. Gets combined confirmation with bullet points for both permissions plus unsubscribe instructions.
+- **Case D (Adoption):** Takes priority. User wants to learn about adopting BD4D Standard. Gets personalized follow-up promise ("We will contact you personally within the next two business days").
+- **Case E (No checkboxes):** User submits without selecting any options. Gets generic welcome message with no confirmation section.
 
 ### Key File
 
