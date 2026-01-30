@@ -179,7 +179,7 @@ class BD4D {
 		);
 
 		if ( is_wp_error( $raw_result ) ) {
-			error_log( 'BD4D Airtable API error: ' . $raw_result->get_error_message() );
+			error_log( 'BD4D contact form Airtable API error: ' . $raw_result->get_error_message() );
 			return self::SEND_ERROR;
 		}
 
