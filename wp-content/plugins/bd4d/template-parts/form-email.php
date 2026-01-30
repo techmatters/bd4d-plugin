@@ -37,6 +37,12 @@
 				Yes! I agree to be publicly acknowledged as a supporter of the Better Deal for Data.
 			</label>
 		</div>
+		<div class="signup-input wide">
+			<label for="inline-subscribe-adoption">
+				<input id="inline-subscribe-adoption" type="checkbox" name="adoption" value="true" />
+				Yes! I would like to learn more about how to adopt the BD4D Standard.
+			</label>
+		</div>
 
 
 		<div class="signup-input wide buttons">
@@ -46,7 +52,7 @@
 	</div>
 	<div class="error-message"></div>
 	<div class="message hidden">
-		<p>Thank you for taking the time to visit A Better Deal for Data.</p>
+		<p>Thank you for taking the time to visit Better Deal for Data.</p>
 
 		<p>We’re excited for your interest in the movement to unlock the full potential of data to serve society!</p>
 
@@ -54,7 +60,7 @@
 
 		<p class="no-email hidden">The latest news will always be on our website, and we look forward to your next visit!</p>
 
-		<p class="yes-email hidden">We’ve received your information. Please watch your inbox for a quick confirmation. We look forward to keeping you updated as our community grows! If you have additional ideas, questions, or a data story to share, please send us a message at <a href="mailto:info@bd4d.org">info@bd4d.org</a>.</p>
+		<p class="yes-email hidden">We’ve received your information, so please watch your inbox for a quick confirmation. We look forward to keeping you updated as our community grows! If you have additional ideas, questions, or a data story to share, please send us a message at <a href="mailto:info@bd4d.org">info@bd4d.org</a>.</p>
 
 	</div>
 </form>

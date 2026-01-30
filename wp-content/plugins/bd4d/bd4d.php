@@ -9,17 +9,17 @@
  * Plugin Name:       A Better Deal for Data
  * Plugin URI:        https://bd4d.org/
  * Description:       A Better Deal for Data
- * Author:            Tech Matters, paulschreiber
+ * Author:            Tech Matters
  * Text Domain:       bd4d
  * Domain Path:       /languages
- * Version:           1.0.2
+ * Version:           1.0.3
  * Requires at least: 6.2
  *
  * @package         BD4D
  */
 
 defined( 'ABSPATH' ) || exit;
-define( 'BD4D_VERSION', '1.0.2' );
+define( 'BD4D_VERSION', '1.0.3' );
 
 require_once __DIR__ . '/includes/class-bd4d.php';
 require_once __DIR__ . '/includes/settings/class-settings.php';
