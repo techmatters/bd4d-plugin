@@ -24,6 +24,7 @@ window.bd4d = {
 		const message = event.target.querySelector( 'textarea[name="message"]' ).value.trim();
 		const newsletter = event.target.querySelector( 'input[name="newsletter"]' );
 		const supporter = event.target.querySelector( 'input[name="supporter"]' );
+		const adoption = event.target.querySelector( 'input[name="adoption"]' );
 
 		if ( emailAddress ) {
 			data.email = emailAddress;
@@ -51,6 +52,10 @@ window.bd4d = {
 
 		if ( supporter.checked ) {
 			data.supporter = supporter.value;
+		}
+
+		if ( adoption.checked ) {
+			data.adoption = adoption.value;
 		}
 
 		if ( ( supporter.checked || newsletter.checked ) & ! emailAddress ) {
