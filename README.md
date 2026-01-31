@@ -3,7 +3,7 @@
 A WordPress plugin by Tech Matters that provides a contact/newsletter subscription form with Airtable integration.
 
 **Website:** https://bd4d.org/
-**Version:** 1.0.2
+**Version:** 1.0.3
 **License:** GPL-2.0-or-later
 
 ## Features
@@ -78,14 +78,16 @@ The plugin writes form submissions to Airtable via the REST API (`https://api.ai
 
 | Airtable Field | Form Input | Type | Required |
 |----------------|------------|------|----------|
-| `Email Address` | Email input | Email | Yes |
-| `First Name` | First name input | Text | No |
-| `Last Name` | Last name input | Text | No |
+| `Email Address` | Email input | Email | No |
+| `First Name` | First name input | Text | Yes |
+| `Last Name` | Last name input | Text | Yes |
 | `Affiliation` | Affiliation input | Text | No |
 | `Form Comments` | Message textarea | Text | No |
 | `Email-Opted In?` | Newsletter checkbox | Boolean | Always sent |
 | `CotW-Opted In?` | Supporter checkbox | Boolean | Always sent |
 | `Adoption?` | Adoption checkbox | Boolean | Always sent |
+
+**Note:** At least one of `Email Address` or `Form Comments` must be provided for submission.
 
 ### Key Files
 
@@ -149,6 +151,11 @@ The plugin sends a confirmation email after successful form submission. The emai
 | **Sandbox** | bd4dsandbox.mystagingwebsite.com | N/A | Static clone from staging (Oct 2025) |
 
 ### How Deployment Works
+
+**Please double-check that this information is still correct before relying on these notes.**
+
+These deployment notes are listed here for convenience, but they are not specific to this plugin.
+This may change based on modifications completely unrelated to this plugin.
 
 Pressable has **GitHub Integration** configured with **manual deployment triggers**:
 
