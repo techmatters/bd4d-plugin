@@ -146,8 +146,8 @@ The plugin sends a confirmation email after successful form submission. The emai
 
 | Environment | URL | Branch | Deploy Method |
 |-------------|-----|--------|---------------|
-| **Production** | bd4d.org | `main` | Manual ("Set and Deploy" button) |
-| **Staging** | bd4d-staging.mystagingwebsite.com | `main` | Manual ("Set and Deploy" button) |
+| **Production** | bd4d.org | `main` | Auto-deploy on push to `main` |
+| **Staging** | bd4d-staging.mystagingwebsite.com | `main` | Unknown (may be auto or manual) |
 | **Sandbox** | bd4dsandbox.mystagingwebsite.com | N/A | Static clone from staging (Oct 2025) |
 
 ### How Deployment Works
@@ -157,12 +157,12 @@ The plugin sends a confirmation email after successful form submission. The emai
 These deployment notes are listed here for convenience, but they are not specific to this plugin.
 This may change based on modifications completely unrelated to this plugin.
 
-Pressable has **GitHub Integration** configured with **manual deployment triggers**:
+Pressable has **GitHub Integration** configured:
 
-1. **Source:** `wp-content/plugins/bd4d` folder in repo
-2. **Destination:** `htdocs/wp-content/plugins/bd4d` on Pressable server
-3. **Trigger:** Manual - click "Set and Deploy" in Pressable dashboard
-4. **Result:** Plugin updated, other themes/plugins untouched
+1. **Source:** UI shows `wp-content` folder in repo
+2. **Destination:** UI shows `htdocs/wp-content` on Pressable server
+3. **Trigger:** Production auto-deploys on push to `main` branch
+4. **Result:** See observations below
 
 ```
 GitHub (main branch)              Pressable
@@ -170,63 +170,60 @@ GitHub (main branch)              Pressable
 wp-content/plugins/bd4d ──────►   htdocs/wp-content/plugins/bd4d
 ```
 
-### ⚠️ CRITICAL: Deployment Path Configuration
+### Deployment Behavior (Observed Jan 2026)
 
-The deployment paths MUST be configured to deploy **only the bd4d plugin**, not the entire `wp-content/` folder.
+**Observations:** Despite the Pressable UI showing `wp-content` → `htdocs/wp-content`, we observed that only `bd4d/` plugin files were updated during deployments. Other plugins, themes, and uploads were not deleted.
 
-**Correct Pressable settings:**
+This was verified by:
+- Comparing Pressable daily backups before/after deployments
+- Checking server file timestamps (`find /srv/htdocs -newermt ...`)
+- Confirming only `bd4d/` files changed
+
+**Why this happens is unclear.** Possible explanations:
+- Pressable may implicitly only sync directories that exist in the repo
+- There may be hidden settings from when staging was cloned to production
+- The behavior could change if the GitHub integration is deleted and recreated
+
+**We cannot confirm the exact behavior without deleting and recreating the integration**, which carries risk.
+
+### ⚠️ Recommended: Correct Path Configuration
+
+The Pressable UI shows broader paths than intended. The **recommended** settings are:
+
 ```
 Repository Directory to Deploy From: wp-content/plugins/bd4d
 Deployment Path:                     htdocs/wp-content/plugins/bd4d
 ```
 
-**Why this matters:** The server has themes and plugins that are NOT in this git repo:
+**Note:** The Pressable UI may show different values and changes may revert when navigating away. The "Set and Deploy" button appears to be required to save settings (which also triggers a deploy).
 
-| On Server (not in git) |
-|------------------------|
-| Divi theme |
-| Divi child theme |
-| autoptimize, cloudflare, divi-pixel, wordpress-seo, etc. |
-
-If you deploy the entire `wp-content/` folder, these will be **permanently deleted**.
+**Server architecture:**
+- `htdocs/` - Your site files (wp-content, wp-config.php) - GitHub deploys here
+- `wordpress/` (symlink) - Pressable's shared WordPress core (managed by Pressable, read-only)
 
 ### Deployment Workflow
 
-There are two ways to deploy to production:
-
-#### Option A: GitHub Deploy to Each Site (Plugin-Only Updates)
-
-Best for: Plugin code changes only, when staging and production have different content/settings.
+Production auto-deploys when you push to `main`:
 
 ```
-GitHub main ──► staging (Set and Deploy) ──► production (Set and Deploy)
+GitHub main ──► production (auto-deploy)
 ```
 
 1. Make changes locally
 2. Run `npx grunt` to build assets (CSS/JS)
 3. Commit changes (including built assets in `wp-content/plugins/bd4d/assets/`)
 4. Push to `main` branch
-5. Go to **bd4d-staging** in Pressable → Click "Set and Deploy" → Test changes
-6. If issues found, fix locally, commit, push, repeat step 5
-7. When satisfied → Go to **bd4d.org** in Pressable → Click "Set and Deploy"
+5. Production auto-deploys within minutes
+6. Verify changes on production
 
-**Pros:** Only updates plugin code, doesn't affect WordPress content/settings
-**Cons:** Two manual deploy steps
+**Recommended: Always backup before deploying** (see `backup.sh` in repo root)
 
-#### Option B: Clone Staging to Production (Full Site Sync)
+#### Alternative: Clone Staging to Production (Full Site Sync)
 
-Best for: When staging and production should be identical mirrors.
+Best for: When staging and production should be identical mirrors (content, settings, everything).
 
-```
-GitHub main ──► staging (Set and Deploy) ──► production (Clone from staging)
-```
-
-1. Make changes locally
-2. Run `npx grunt` to build assets (CSS/JS)
-3. Commit and push to `main` branch
-4. Go to **bd4d-staging** in Pressable → Click "Set and Deploy" → Test changes
-5. If issues found, fix locally, commit, push, repeat step 4
-6. When satisfied → Clone staging to production in Pressable
+1. Make and test changes on staging
+2. When satisfied → Clone staging to production in Pressable dashboard
 
 **Pros:** Single source of truth, staging exactly matches what goes to production
 **Cons:** Copies EVERYTHING (database, uploads, settings) - overwrites any production-only content
