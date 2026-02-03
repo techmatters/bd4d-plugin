@@ -170,19 +170,25 @@ class BD4D {
 		$data['fields']['CotW-Opted In?']  = $supporter;
 		$data['fields']['Adoption?']       = $adoption;
 
-		$raw_result = wp_remote_post(
+		$start_time   = microtime( true );
+		$raw_result   = wp_remote_post(
 			self::BASE_URL . '/' . self::base_id() . '/' . self::table_id(),
 			[
 				'headers' => self::headers(),
 				'body'    => wp_json_encode( $data ),
+				'timeout' => 15, // phpcs:ignore WordPressVIPMinimum.Performance.RemoteRequestTimeout.timeout_timeout -- 15s needed for slow Airtable responses.
 			]
 		);
+		$elapsed_time = round( ( microtime( true ) - $start_time ) * 1000 );
 
 		if ( is_wp_error( $raw_result ) ) {
 			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Intentional logging of API errors for debugging.
-			error_log( 'BD4D contact form Airtable API error: ' . $raw_result->get_error_message() );
+			error_log( 'BD4D contact form Airtable API error: ' . $raw_result->get_error_message() . ' (took ' . $elapsed_time . 'ms)' );
 			return self::SEND_ERROR;
 		}
+
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Intentional logging of API timing for debugging.
+		error_log( 'BD4D contact form Airtable API success (took ' . $elapsed_time . 'ms)' );
 
 		$result        = json_decode( $raw_result['body'], true );
 		$http_response = $raw_result['response'];
@@ -241,8 +247,14 @@ class BD4D {
 		if ( $email ) {
 			$body = self::message_body( $message, $newsletter, $supporter, $adoption );
 			if ( self::SEND_SUCCESS === $result ) {
-				self::send_confirmation_message( $email, $subject, $body );
-				wp_send_json_success();
+				$email_sent = self::send_confirmation_message( $email, $subject, $body );
+				if ( ! $email_sent ) {
+					// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Intentional logging of email errors for debugging.
+					error_log( 'BD4D contact form email send failed for: ' . $email );
+					$result = self::SEND_ERROR;
+				} else {
+					wp_send_json_success();
+				}
 			}
 		} elseif ( self::SEND_SUCCESS === $result ) {
 				wp_send_json_success();
@@ -265,7 +277,7 @@ class BD4D {
 	 * @param string $body                   Message text.
 	 */
 	public static function send_confirmation_message( $recipient, $subject, $body ) {
-		wp_mail( $recipient, $subject, $body ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_mail_wp_mail
+		return wp_mail( $recipient, $subject, $body ); // phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.wp_mail_wp_mail
 	}
 
 	/**
