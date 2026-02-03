@@ -110,7 +110,54 @@ div.form-fields {
 		&[disabled="disabled"] {
 			opacity: 0.5;
 		}
+
+		// Loading state
+		&.is-loading {
+			position: relative;
+			padding-left: 2.5em;
+			cursor: wait;
+
+			&::before {
+				content: '';
+				position: absolute;
+				left: 1em;
+				top: 50%;
+				width: 1em;
+				height: 1em;
+				margin-top: -0.5em;
+				border: 2px solid transparent;
+				border-top-color: currentcolor;
+				border-radius: 50%;
+				animation: bd4d-spin 0.8s linear infinite;
+			}
+		}
+
+		// Error state
+		&.is-error {
+			background-color: #dc3545;
+			color: white;
+			border-color: #dc3545;
+		}
 	}
+
+	// Error message highlight
+	.error-message.is-visible {
+		background-color: rgb(220, 53, 69, 15%);
+		border: 1px solid #dc3545;
+		border-radius: 4px;
+		padding: 0.75em 1em;
+		margin-top: 1em;
+		animation: bd4d-pulse 0.5s ease-in-out;
+	}
+}
+
+@keyframes bd4d-spin {
+	to { transform: rotate(360deg); }
+}
+
+@keyframes bd4d-pulse {
+	0%, 100% { opacity: 1; }
+	50% { opacity: 0.6; }
 }
 
 /* override divi styles */

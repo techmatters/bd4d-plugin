@@ -7,6 +7,9 @@ window.bd4d = {
 
 	processSubscription: function( event ) {
 		const submitButton = document.querySelector( 'input[type="submit"]' );
+		const originalButtonText = submitButton.value;
+		submitButton.value = 'Sending...';
+		submitButton.classList.add( 'is-loading' );
 		submitButton.setAttribute( 'disabled', 'disabled' );
 
 		event.preventDefault();
@@ -61,7 +64,7 @@ window.bd4d = {
 		if ( ( supporter.checked || newsletter.checked ) & ! emailAddress ) {
 			event.target.querySelectorAll( '#inline-subscribe-email' ).forEach( ( item ) => item.classList.add( 'has-error' ) );
 			event.target.querySelector( '.error-message' ).textContent = localize.error_codes[10];
-			submitButton.removeAttribute( 'disabled' );
+			window.bd4d.resetButton( submitButton, originalButtonText );
 			return;
 		}
 
@@ -70,7 +73,7 @@ window.bd4d = {
 				.querySelectorAll( '#inline-subscribe-email,#inline-subscribe-message' )
 				.forEach( ( item ) => item.classList.add( 'has-error' ) );
 			event.target.querySelector( '.error-message' ).textContent = localize.error_codes[6];
-			submitButton.removeAttribute( 'disabled' );
+			window.bd4d.resetButton( submitButton, originalButtonText );
 			return;
 		}
 
@@ -103,12 +106,7 @@ window.bd4d = {
 						// 4 is a JSON parsing error.
 						errorMessage += ` (${res?.data?.error_message})`;
 					}
-					event.target.querySelector( '.error-message' ).textContent = errorMessage;
-
-					// Reset the CAPTCHA after a failure.
-					window.bd4d.gcaptchaHandler();
-
-					submitButton.removeAttribute( 'disabled' );
+					window.bd4d.showError( submitButton, originalButtonText, event.target, errorMessage );
 				}
 			}
 		} );
@@ -131,6 +129,35 @@ window.bd4d = {
 		if ( event.target.value.trim() ) {
 			window.bd4d.messageField.classList.remove( 'has-error' );
 		}
+	},
+
+	resetButton: function( button, originalText ) {
+		button.value = originalText;
+		button.classList.remove( 'is-loading' );
+		button.removeAttribute( 'disabled' );
+	},
+
+	showError: function( button, originalText, form, errorMessage ) {
+		const errorDiv = form.querySelector( '.error-message' );
+
+		// Show "Failed!" on button briefly.
+		button.value = 'Failed!';
+		button.classList.remove( 'is-loading' );
+		button.classList.add( 'is-error' );
+
+		// Show and highlight error message.
+		errorDiv.textContent = errorMessage;
+		errorDiv.classList.add( 'is-visible' );
+
+		// Reset the CAPTCHA after a failure.
+		window.bd4d.gcaptchaHandler();
+
+		// After 2 seconds, restore button to normal state.
+		setTimeout( function() {
+			button.value = originalText;
+			button.classList.remove( 'is-error' );
+			button.removeAttribute( 'disabled' );
+		}, 2000 );
 	},
 
 	setup: function() {
