@@ -42,7 +42,7 @@ window.bd4d = {
 		const affiliation = event.target.querySelector( 'input[name="affiliation"]' ).value.trim();
 		const message = event.target.querySelector( 'textarea[name="message"]' ).value.trim();
 		const newsletter = event.target.querySelector( 'input[name="newsletter"]' );
-		const supporter = event.target.querySelector( 'input[name="supporter"]' );
+		const endorser = event.target.querySelector( 'input[name="endorser"]' );
 		const adoption = event.target.querySelector( 'input[name="adoption"]' );
 
 		if ( emailAddress ) {
@@ -69,17 +69,22 @@ window.bd4d = {
 			data.newsletter = newsletter.value;
 		}
 
-		if ( supporter.checked ) {
-			data.supporter = supporter.value;
+		if ( endorser.checked ) {
+			data.endorser = endorser.value;
 		}
 
 		if ( adoption.checked ) {
 			data.adoption = adoption.value;
 		}
 
-		if ( ( supporter.checked || newsletter.checked ) & ! emailAddress ) {
-			event.target.querySelectorAll( '#inline-subscribe-email' ).forEach( ( item ) => item.classList.add( 'has-error' ) );
-			event.target.querySelector( '.error-message' ).textContent = localize.error_codes[10];
+		if ( ( newsletter.checked || endorser.checked || adoption.checked ) && ! emailAddress ) {
+
+			// An opt-in checkbox requires an email. Surface it via the browser's
+			// native validation popup on the email field — the same UX as the
+			// required first/last name fields — rather than the message below.
+			const emailInput = event.target.querySelector( 'input[name="email"]' );
+			emailInput.setCustomValidity( localize.error_codes[10] );
+			emailInput.reportValidity();
 			window.bd4d.resetButton( submitButton, originalButtonText );
 			return;
 		}
@@ -151,16 +156,11 @@ window.bd4d = {
 	},
 
 	emailFieldHandler: function( event ) {
-		if ( event.target.value.trim() ) {
-			window.bd4d.emailCheckbox.removeAttribute( 'disabled' );
-			window.bd4d.supporterCheckbox.removeAttribute( 'disabled' );
-			window.bd4d.emailField.classList.remove( 'has-error' );
-		} else {
-			window.bd4d.emailCheckbox.removeAttribute( 'checked' );
-			window.bd4d.emailCheckbox.setAttribute( 'disabled', 'disabled' );
-			window.bd4d.supporterCheckbox.removeAttribute( 'checked' );
-			window.bd4d.supporterCheckbox.setAttribute( 'disabled', 'disabled' );
-		}
+
+		// Clear the email field's validation state as the user types, so a prior
+		// "email required" popup or error styling doesn't persist.
+		event.target.setCustomValidity( '' );
+		event.target.classList.remove( 'has-error' );
 	},
 
 	messageFieldHandler: function( event ) {
@@ -201,8 +201,6 @@ window.bd4d = {
 		if ( subscribeForm ) {
 			window.bd4d.emailField = document.getElementById( 'inline-subscribe-email' );
 			window.bd4d.messageField = document.getElementById( 'inline-subscribe-message' );
-			window.bd4d.emailCheckbox = document.getElementById( 'inline-subscribe-newsletter' );
-			window.bd4d.supporterCheckbox = document.getElementById( 'inline-subscribe-supporter' );
 			window.bd4d.emailField.addEventListener( 'input', window.bd4d.emailFieldHandler );
 			window.bd4d.messageField.addEventListener( 'input', window.bd4d.messageFieldHandler );
 

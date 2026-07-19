@@ -148,10 +148,10 @@ class BD4D {
 	 * @param string  $affiliation        User's company or organization.
 	 * @param string  $message            User's message.
 	 * @param boolean $newsletter         Whether or not to subscribe to the newsletter.
-	 * @param boolean $supporter          Whether or not to identify the user as a supporter.
+	 * @param boolean $endorser           Whether or not to identify the user as a BD4D Endorser.
 	 * @param boolean $adoption           Whether or not the user wants to learn about adopting BD4D.
 	 */
-	public static function add( $email, $first_name = false, $last_name = false, $affiliation = false, $message = false, $newsletter = false, $supporter = false, $adoption = false ) {
+	public static function add( $email, $first_name = false, $last_name = false, $affiliation = false, $message = false, $newsletter = false, $endorser = false, $adoption = false ) {
 		$data = [ 'fields' => [ 'Email Address' => $email ] ];
 		if ( $first_name ) {
 			$data['fields']['First Name'] = $first_name;
@@ -167,7 +167,7 @@ class BD4D {
 		}
 		
 		$data['fields']['Email-Opted In?'] = $newsletter;
-		$data['fields']['CotW-Opted In?']  = $supporter;
+		$data['fields']['Endorser?']       = $endorser;
 		$data['fields']['Adoption?']       = $adoption;
 
 		$start_time   = microtime( true );
@@ -244,14 +244,14 @@ class BD4D {
 
 		$message    = empty( $_POST['message'] ) ? '' : trim( sanitize_text_field( wp_unslash( $_POST['message'] ) ) );
 		$newsletter = ! empty( $_POST['newsletter'] );
-		$supporter  = ! empty( $_POST['supporter'] );
+		$endorser   = ! empty( $_POST['endorser'] );
 		$adoption   = ! empty( $_POST['adoption'] );
 
-		$subject = 'Welcome to the Better Deal for Data Community!';
+		$subject = 'Welcome to a Better Deal for Data';
 
-		$result = self::add( $email, $first_name, $last_name, $affiliation, $message, $newsletter, $supporter, $adoption );
+		$result = self::add( $email, $first_name, $last_name, $affiliation, $message, $newsletter, $endorser, $adoption );
 		if ( $email ) {
-			$body = self::message_body( $message, $newsletter, $supporter, $adoption );
+			$body = self::message_body( $message, $newsletter, $endorser, $adoption );
 			if ( self::SEND_SUCCESS === $result ) {
 				$email_sent = self::send_confirmation_message( $email, $subject, $body );
 				if ( ! $email_sent ) {
@@ -293,10 +293,10 @@ class BD4D {
 	 *
 	 * @param string  $comment                User's comment.
 	 * @param boolean $newsletter             User opted in to newsletter.
-	 * @param boolean $supporter              User opted in as supporter.
+	 * @param boolean $endorser               User opted in as a BD4D Endorser.
 	 * @param boolean $adoption               User wants to learn about adopting BD4D.
 	 */
-	public static function message_body( $comment, $newsletter, $supporter, $adoption ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
+	public static function message_body( $comment, $newsletter, $endorser, $adoption ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		ob_start();
 		include dirname( __DIR__ ) . '/template-parts/auto-reply.php';
 		return trim( ob_get_clean() );
