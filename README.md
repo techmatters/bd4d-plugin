@@ -182,17 +182,19 @@ The plugin sends a confirmation email after successful form submission. The emai
 
 ### How Deployment Works
 
-**Please double-check that this information is still correct before relying on these notes.**
+**Confirmed working 2026-07-18:** merging a PR to `main` auto-deployed to production within
+a couple of minutes with **no** manual "Set and Deploy" click. Only the `bd4d` plugin directory
+was updated, and the deployed files were verified byte-identical to `main`.
 
-These deployment notes are listed here for convenience, but they are not specific to this plugin.
-This may change based on modifications completely unrelated to this plugin.
+These notes are not specific to this plugin and could still change based on Pressable-side
+configuration unrelated to this repo, so re-verify if a deploy ever behaves unexpectedly.
 
 Pressable has **GitHub Integration** configured:
 
 1. **Source:** UI shows `wp-content` folder in repo
 2. **Destination:** UI shows `htdocs/wp-content` on Pressable server
-3. **Trigger:** Production auto-deploys on push to `main` branch
-4. **Result:** See observations below
+3. **Trigger:** Production auto-deploys on push/merge to `main` branch (confirmed 2026-07-18)
+4. **Result:** Only `wp-content/plugins/bd4d` is updated on the server
 
 ```
 GitHub (main branch)              Pressable
@@ -225,7 +227,7 @@ Repository Directory to Deploy From: wp-content/plugins/bd4d
 Deployment Path:                     htdocs/wp-content/plugins/bd4d
 ```
 
-**Note:** The Pressable UI may show different values and changes may revert when navigating away. The "Set and Deploy" button appears to be required to save settings (which also triggers a deploy).
+**Note:** The Pressable UI may show different values and changes may revert when navigating away. The "Set and Deploy" button is only needed to save/change the deploy *path* settings (which also triggers a deploy). A routine code change does **not** require it — a push/merge to `main` auto-deploys on its own (confirmed 2026-07-18).
 
 **Server architecture:**
 - `htdocs/` - Your site files (wp-content, wp-config.php) - GitHub deploys here
