@@ -12,14 +12,14 @@
  * Author:            Tech Matters
  * Text Domain:       bd4d
  * Domain Path:       /languages
- * Version:           1.0.4
+ * Version:           1.0.5
  * Requires at least: 6.2
  *
  * @package         BD4D
  */
 
 defined( 'ABSPATH' ) || exit;
-define( 'BD4D_VERSION', '1.0.4' );
+define( 'BD4D_VERSION', '1.0.5' );
 
 require_once __DIR__ . '/includes/class-bd4d.php';
 require_once __DIR__ . '/includes/settings/class-settings.php';
