@@ -1,7 +1,9 @@
 # Auto-Reply Email Cases - Full Text
 
+Subject line: `Welcome to a Better Deal for Data`
+
 ## Case A: Newsletter only
-Newsletter: ✓ | Supporter: ✗ | Adoption: ✗
+Newsletter: ✓ | Endorser: ✗ | Adoption: ✗
 
 ```
 Hello, and thank you for joining the Better Deal for Data community!
@@ -23,15 +25,17 @@ Tech Matters is a nonprofit tech organization.
 
 ---
 
-## Case B: Supporter only
-Newsletter: ✗ | Supporter: ✓ | Adoption: ✗
+## Case B: Endorser only
+Newsletter: ✗ | Endorser: ✓ | Adoption: ✗
 
 ```
 Hello, and thank you for joining the Better Deal for Data community!
 
-We're excited to welcome you to the movement to unlock the full potential of data to serve society, and add your name to our growing list of public supporters as part of our Coalition of the Willing.
+We're grateful for your endorsement of the BD4D Standard, and excited to welcome you to this movement to unlock the full potential of data to serve society.
 
-This message is to confirm that we have your permission to display your name and affiliation on our website. If you choose to sign up for email updates in the future, or if you have feedback, questions, or a data story to share, please send us a message at info@bd4d.org. We'd love to hear from you!
+This message is to confirm that we have your permission to display your name and affiliation as a BD4D Endorser on our website. We will contact you if we have additional questions regarding your endorsement.
+
+If you would like to sign up for our email newsletter in the future, or if you have feedback, questions, or a data story to share, please do send us a message at info@bd4d.org. We'd love to hear from you!
 
 All the best,
 Celine
@@ -44,17 +48,17 @@ Tech Matters is a nonprofit tech organization.
 
 ---
 
-## Case C: Newsletter + Supporter
-Newsletter: ✓ | Supporter: ✓ | Adoption: ✗
+## Case C: Newsletter + Endorser
+Newsletter: ✓ | Endorser: ✓ | Adoption: ✗
 
 ```
 Hello, and thank you for joining the Better Deal for Data community!
 
-We're excited to welcome you to the movement to unlock the full potential of data to serve society, and add your name to our growing list of public supporters as part of our Coalition of the Willing.
+We're grateful for your endorsement of the BD4D Standard, and excited to welcome you to this movement to unlock the full potential of data to serve society.
 
 This message is to confirm:
-• that we have your permission to display your name and affiliation on our website; and
-• that you have subscribed to our email updates via our website. If you wish to unsubscribe from our email updates, please reply to this email with the word "Unsubscribe."
+• We have permission to display your name and affiliation as a BD4D Endorser on our website; and
+• You have subscribed to our email updates via our website. If you wish to unsubscribe from our email updates, please reply to this email with the word "Unsubscribe."
 
 We'd love to hear your feedback, questions, or stories about data! You can reach us at info@bd4d.org.
 
@@ -70,14 +74,14 @@ Tech Matters is a nonprofit tech organization.
 ---
 
 ## Case D: Adoption (takes priority over other checkboxes)
-Newsletter: any | Supporter: any | Adoption: ✓
+Newsletter: any | Endorser: any | Adoption: ✓
 
 ```
-Hello, and welcome to the Better Deal for Data community!
+Hello, and welcome to the Better Deal for Data community–we're excited to support your organization in adopting the BD4D Standard!
 
-We're excited to learn more about how your organization works with data for good, and answer any questions you have about adopting the BD4D Standard. We will contact you personally within the next two business days.
+We'd love to learn more about how you work with data for good, and answer any questions you have about the BD4D Commitments, BD4D Playbook, or implementation. We will contact you personally within the next two business days.
 
-In the meantime, please don't hesitate to contact us at info@bd4d.org.
+In the meantime, please don't hesitate to contact us at info@bd4d.org to share any feedback or ideas.
 
 Many thanks,
 Celine
@@ -90,8 +94,8 @@ Tech Matters is a nonprofit tech organization.
 
 ---
 
-## Case E: No checkboxes selected
-Newsletter: ✗ | Supporter: ✗ | Adoption: ✗
+## Case E: No checkboxes selected (email provided)
+Newsletter: ✗ | Endorser: ✗ | Adoption: ✗
 
 ```
 Hello, and thank you for joining the Better Deal for Data community!
