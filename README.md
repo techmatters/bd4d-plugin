@@ -114,6 +114,36 @@ The plugin writes form submissions to Airtable via the REST API (`https://api.ai
 - Plugin creates new records (POST), does not update existing ones
 - Auto-reply email is sent after successful Airtable write
 
+### Rotating the Airtable Token
+
+The form authenticates to Airtable with a **Personal Access Token (PAT)** stored in
+WP Admin → BD4D → Contact Form Settings → **Airtable Token**. If that token is revoked,
+expires, or loses access to the base, submissions fail with **"Unable to send message"**
+and `wp-content/debug.log` shows a 403:
+
+```
+BD4D contact form Airtable API rejected submission: HTTP 403 body:
+{"error":{"type":"INVALID_PERMISSIONS_OR_MODEL_NOT_FOUND", ...}}
+```
+
+To issue a replacement token:
+
+1. In Airtable, go to **Builder Hub → Developers → Personal access tokens → Create new token**.
+   - **Name:** something identifiable, e.g. `bd4d-airtable-YYYYMMDD`.
+   - **Scopes:** add both `data.records:read` **and** `data.records:write`.
+   - **Access:** add the base **BD4D-Relationships-Main XRM** (base ID `appgrixUjq2JjgPbP`).
+     You can only grant access to a base your own account can open — confirm at
+     `https://airtable.com/appgrixUjq2JjgPbP`.
+2. Click **Create token** and copy the `pat…` value (shown only once).
+3. In **WP Admin → BD4D → Contact Form Settings**, paste it into **Airtable Token** and save.
+   Leave **Base ID** (`appgrixUjq2JjgPbP`) and **Table ID** (`tbl9KA9XVlZW1FDau`, the
+   *Individual Contacts-MAIN* table) unchanged.
+4. Submit the form to test. On success, `debug.log` shows
+   `BD4D contact form Airtable API responded HTTP 200`.
+
+**Tip:** create the token under a shared/service Airtable account rather than an individual's,
+so it does not break when a person loses access to the base.
+
 ## Auto-Reply Email Logic
 
 The plugin sends a confirmation email after successful form submission. The email content varies based on which checkboxes were selected.
