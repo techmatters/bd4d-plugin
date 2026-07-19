@@ -3,7 +3,7 @@
 A WordPress plugin by Tech Matters that provides a contact/newsletter subscription form with Airtable integration.
 
 **Website:** https://bd4d.org/
-**Version:** 1.0.3
+**Version:** 1.0.5
 **License:** GPL-2.0-or-later
 
 ## Features
