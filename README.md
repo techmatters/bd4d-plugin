@@ -84,8 +84,9 @@ The plugin writes form submissions to Airtable via the REST API (`https://api.ai
 | `Affiliation` | Affiliation input | Text | No |
 | `Form Comments` | Message textarea | Text | No |
 | `Email-Opted In?` | Newsletter checkbox | Boolean | Always sent |
-| `CotW-Opted In?` | Supporter checkbox | Boolean | Always sent |
+| `Endorser?` | Endorser checkbox | Boolean | Always sent |
 | `Adoption?` | Adoption checkbox | Boolean | Always sent |
+| `CotW-Opted In?` | _Supporter checkbox — removed from form (v1.0.6); field retained for historical opt-ins_ | Boolean | No longer sent |
 
 **Note:** At least one of `Email Address` or `Form Comments` must be provided for submission.
 

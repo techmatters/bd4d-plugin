@@ -32,9 +32,9 @@
 			</label>
 		</div>
 		<div class="signup-input wide">
-			<label for="inline-subscribe-supporter">
-				<input id="inline-subscribe-supporter" type="checkbox" name="supporter" value="true" />
-				Yes! I agree to be publicly acknowledged as a supporter of the Better Deal for Data.
+			<label for="inline-subscribe-endorser">
+				<input id="inline-subscribe-endorser" type="checkbox" name="endorser" value="true" />
+				Yes! I agree to be publicly acknowledged as a BD4D Endorser.
 			</label>
 		</div>
 		<div class="signup-input wide">
@@ -54,7 +54,7 @@
 	<div class="message hidden">
 		<p>Thank you for taking the time to visit Better Deal for Data.</p>
 
-		<p>We’re excited for your interest in the movement to unlock the full potential of data to serve society!</p>
+		<p>We’re excited for your interest in the BD4D Standard, and the movement to unlock the full potential of data to serve society!</p>
 
 		<p class="no-email hidden">We’ve received your comments, and welcome any additional ideas or questions. If you choose to sign up for email updates in the future, please send us a message at <a href="mailto:info@bd4d.org">info@bd4d.org</a>.</p>
 
