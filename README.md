@@ -176,8 +176,8 @@ The plugin sends a confirmation email after successful form submission. The emai
 
 | Environment | URL | Branch | Deploy Method |
 |-------------|-----|--------|---------------|
-| **Production** | bd4d.org | `main` | Auto-deploy on push to `main` |
-| **Staging** | bd4d-staging.mystagingwebsite.com | `main` | Unknown (may be auto or manual) |
+| **Production** | bd4d.org | `main` | Auto-deploy on push/merge to `main` (confirmed 2026-07-18) |
+| **Staging** | bd4d-staging.mystagingwebsite.com | `staging` | Auto-deploy on push to `staging` (configured 2026-07-19) |
 | **Sandbox** | bd4dsandbox.mystagingwebsite.com | N/A | Static clone from staging (Oct 2025) |
 
 ### How Deployment Works
@@ -189,45 +189,48 @@ was updated, and the deployed files were verified byte-identical to `main`.
 These notes are not specific to this plugin and could still change based on Pressable-side
 configuration unrelated to this repo, so re-verify if a deploy ever behaves unexpectedly.
 
-Pressable has **GitHub Integration** configured:
-
-1. **Source:** UI shows `wp-content` folder in repo
-2. **Destination:** UI shows `htdocs/wp-content` on Pressable server
-3. **Trigger:** Production auto-deploys on push/merge to `main` branch (confirmed 2026-07-18)
-4. **Result:** Only `wp-content/plugins/bd4d` is updated on the server
+Each Pressable site (production and staging) has its own **GitHub Integration** pointing at this
+repo. A push/merge to a site's configured branch auto-deploys within a couple of minutes.
 
 ```
-GitHub (main branch)              Pressable
-─────────────────────             ────────────────────
-wp-content/plugins/bd4d ──────►   htdocs/wp-content/plugins/bd4d
+GitHub                             Pressable
+──────────────────                 ─────────────────────────────────────────
+main    branch  ─────►             production  (bd4d.org)
+staging branch  ─────►             staging     (bd4d-staging.mystagingwebsite.com)
+
+wp-content/plugins/bd4d ─────►     htdocs/wp-content/plugins/bd4d   (both sites)
 ```
 
-### Deployment Behavior (Observed Jan 2026)
+### GitHub Integration Settings (per site)
 
-**Observations:** Despite the Pressable UI showing `wp-content` → `htdocs/wp-content`, we observed that only `bd4d/` plugin files were updated during deployments. Other plugins, themes, and uploads were not deleted.
+Each site's integration (Pressable dashboard → site → GitHub Integration) uses per-directory
+**Include** and **Delete** toggles. Verified configuration for both sites:
 
-This was verified by:
-- Comparing Pressable daily backups before/after deployments
-- Checking server file timestamps (`find /srv/htdocs -newermt ...`)
-- Confirming only `bd4d/` files changed
+| Setting | Production | Staging |
+|---------|------------|---------|
+| Branch | `main` | `staging` |
+| Include **plugins** directory | Yes | Yes |
+| Include **themes** directory | No | No |
+| Include **MU Plugins** directory | No | No |
+| Delete plugin files not in repo | **No** | **No** |
+| Delete theme files not in repo | **No** | **No** |
+| Delete MU plugin files not in repo | **No** | **No** |
 
-**Why this happens is unclear.** Possible explanations:
-- Pressable may implicitly only sync directories that exist in the repo
-- There may be hidden settings from when staging was cloned to production
-- The behavior could change if the GitHub integration is deleted and recreated
+With "Include plugins: Yes" and the "Delete" toggles off, a deploy only **adds/updates** the
+`bd4d` plugin and never removes or touches anything else. Note: selecting a branch in the dropdown
+does nothing until you click **Set and Deploy** to commit it.
 
-**We cannot confirm the exact behavior without deleting and recreating the integration**, which carries risk.
+#### ⚠️ NEVER enable a "Delete … files not in repository" toggle
 
-### ⚠️ Recommended: Correct Path Configuration
+This repo contains **only** `wp-content/plugins/bd4d`. The server runs ~14 plugins (Divi Pixel,
+Jetpack, Autoptimize, WordPress SEO, etc.) that are **not** in this repo. Enabling "Delete plugin
+files not in repository" would delete **all of them** on the next deploy. Keep all three red
+"Delete …" toggles **off, permanently**.
 
-The Pressable UI shows broader paths than intended. The **recommended** settings are:
+#### mu-plugins are NOT deployed
 
-```
-Repository Directory to Deploy From: wp-content/plugins/bd4d
-Deployment Path:                     htdocs/wp-content/plugins/bd4d
-```
-
-**Note:** The Pressable UI may show different values and changes may revert when navigating away. The "Set and Deploy" button is only needed to save/change the deploy *path* settings (which also triggers a deploy). A routine code change does **not** require it — a push/merge to `main` auto-deploys on its own (confirmed 2026-07-18).
+"Include MU Plugins" is off, so files under `wp-content/mu-plugins/` must be copied to the server
+manually (SFTP/rsync). Routine plugin deploys never touch them.
 
 **Server architecture:**
 - `htdocs/` - Your site files (wp-content, wp-config.php) - GitHub deploys here
@@ -235,18 +238,24 @@ Deployment Path:                     htdocs/wp-content/plugins/bd4d
 
 ### Deployment Workflow
 
-Production auto-deploys when you push to `main`:
+Test on staging first, then promote to production:
 
 ```
-GitHub main ──► production (auto-deploy)
+feature branch ──► staging branch ──► staging site   (test)
+                          │
+                          ▼ (open PR, merge)
+                        main branch  ──► production    (live)
 ```
 
-1. Make changes locally
+1. Make changes locally on a feature branch
 2. Run `npx grunt` to build assets (CSS/JS)
-3. Commit changes (including built assets in `wp-content/plugins/bd4d/assets/`)
-4. Push to `main` branch
-5. Production auto-deploys within minutes
-6. Verify changes on production
+3. Commit (including built assets in `wp-content/plugins/bd4d/assets/`)
+4. **Staging:** push the work to the `staging` branch → staging site auto-deploys → test.
+   (Staging is gated by HTTP Basic Auth — log in with any WP admin credential — and it writes to
+   the **production** Airtable base, so test submissions land in prod data. Delete them after.)
+5. **Production:** open a PR to `main`, merge (squash/rebase — linear history is enforced on
+   `main`) → production auto-deploys within minutes
+6. Verify on production
 
 **Recommended: Always backup before deploying** (see `backup.sh` in repo root)
 
@@ -271,20 +280,19 @@ Best for: When staging and production should be identical mirrors (content, sett
 
 **Note:** Form submissions go to Airtable, not WordPress, so no form data is lost either way.
 
-### Note on GitHub `staging` Branch
+### The GitHub `staging` Branch
 
-The `staging` branch in the GitHub repo is **not used** and is stale:
+As of 2026-07-19 the `staging` branch is the **deploy source for the staging site** (it was
+previously stale and unused). It was fast-forwarded to `main`, and the staging site's GitHub
+Integration was pointed at it (Selected Branch: `staging`). Push feature work to `staging` to
+deploy it to the staging site for testing; it doesn't need to stay perfectly in sync with `main`
+between tests.
 
-| Branch | Last Commit | Date |
-|--------|-------------|------|
-| `main` | 64aee4e | Jan 6, 2026 |
-| `staging` | a8bcbbe "fix: fix submit button handling" | Mar 27, 2025 |
-
-**204 commits behind main:**
-- 202 are Dependabot dependency updates
-- 2 are actual code changes (`fix: disable mobile logo fix`, `build: update dependencies`)
-
-The staging workflow happens at the **Pressable level** (deploy to staging site first, then production), not via git branches. The `staging` branch could be deleted or kept for historical reference.
+> First-push note: the staging integration was (re)configured on 2026-07-19 after previously
+> pointing at a deleted branch. The auto-deploy-on-push behavior is expected to work like
+> production but should be confirmed on the first real push to `staging` (check the deployed
+> file timestamps on the server). If it doesn't fire, deploy manually via **Set and Deploy** or
+> rsync, and re-check the integration.
 
 ### GitHub Actions (CI only, not deployment)
 
