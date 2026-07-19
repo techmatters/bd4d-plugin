@@ -187,11 +187,12 @@ class BD4D {
 			return self::SEND_ERROR;
 		}
 
-		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Intentional logging of API timing for debugging.
-		error_log( 'BD4D contact form Airtable API success (took ' . $elapsed_time . 'ms)' );
-
 		$result        = json_decode( $raw_result['body'], true );
 		$http_response = $raw_result['response'];
+		$http_code     = isset( $http_response['code'] ) ? $http_response['code'] : 'unknown';
+
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Intentional logging of API timing for debugging.
+		error_log( 'BD4D contact form Airtable API responded HTTP ' . $http_code . ' (took ' . $elapsed_time . 'ms)' );
 
 		if ( ! $result ) {
 			return self::JSON_ERROR;
@@ -207,6 +208,11 @@ class BD4D {
 			}
 		}
 
+		// The request completed but the response was not an accepted 200 with a
+		// matching record. Log the status and body so the failure is diagnosable
+		// (e.g. Airtable 422 UNKNOWN_FIELD_NAME, auth errors, or a name mismatch).
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Intentional logging of API errors for debugging.
+		error_log( 'BD4D contact form Airtable API rejected submission: HTTP ' . $http_code . ' body: ' . $raw_result['body'] );
 		return self::SEND_ERROR;
 	}
 
