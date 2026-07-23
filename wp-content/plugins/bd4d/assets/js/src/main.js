@@ -89,15 +89,6 @@ window.bd4d = {
 			return;
 		}
 
-		if ( ! emailAddress && ! message ) {
-			event.target
-				.querySelectorAll( '#inline-subscribe-email,#inline-subscribe-message' )
-				.forEach( ( item ) => item.classList.add( 'has-error' ) );
-			event.target.querySelector( '.error-message' ).textContent = localize.error_codes[6];
-			window.bd4d.resetButton( submitButton, originalButtonText );
-			return;
-		}
-
 		// Fetch a fresh reCAPTCHA token, then send. Doing this at submit time
 		// (rather than at page load) avoids expired-token failures for people
 		// who spend more than ~2 minutes filling out the form.
