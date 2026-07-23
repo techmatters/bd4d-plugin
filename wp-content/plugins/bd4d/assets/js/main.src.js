@@ -118,15 +118,20 @@ window.bd4d = {
 							.querySelectorAll( '#joinbd4dnet .et_pb_text_inner,#joinbd4dnet .form-fields' )
 							.forEach( ( item ) => item.classList.add( 'hidden' ) );
 						event.target.querySelector( '.message' ).classList.remove( 'hidden' );
-						if ( emailAddress ) {
-							event.target
-								.querySelectorAll( '.message .yes-email' )
-								.forEach( ( item ) => item.classList.remove( 'hidden' ) );
+
+						// Pick the success message: any opt-in checked -> "watch your
+						// inbox"; otherwise it depends on whether a comment was given.
+						let messageVariant;
+						if ( newsletter.checked || endorser.checked || adoption.checked ) {
+							messageVariant = '.msg-optin';
+						} else if ( message ) {
+							messageVariant = '.msg-comment';
 						} else {
-							event.target
-								.querySelectorAll( '.message .no-email' )
-								.forEach( ( item ) => item.classList.remove( 'hidden' ) );
+							messageVariant = '.msg-nocomment';
 						}
+						event.target
+							.querySelectorAll( '.message ' + messageVariant )
+							.forEach( ( item ) => item.classList.remove( 'hidden' ) );
 					} else {
 						let errorMessage = localize.error_codes[res?.data?.error_code];
 						if ( 4 === res?.data?.error_code ) {
