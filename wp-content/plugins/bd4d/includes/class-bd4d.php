@@ -35,6 +35,8 @@ class BD4D {
 		add_shortcode( 'bd4d-contact-form', [ __CLASS__, 'render_email_form' ] );
 		add_action( 'wp_ajax_nopriv_send_message', [ __CLASS__, 'send_message' ] );
 		add_action( 'wp_ajax_send_message', [ __CLASS__, 'send_message' ] );
+		add_action( 'wp_ajax_nopriv_bd4d_nonce', [ __CLASS__, 'get_nonce' ] );
+		add_action( 'wp_ajax_bd4d_nonce', [ __CLASS__, 'get_nonce' ] );
 		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'enqueue_scripts' ] );
 	}
 
@@ -214,6 +216,19 @@ class BD4D {
 		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Intentional logging of API errors for debugging.
 		error_log( 'BD4D contact form Airtable API rejected submission: HTTP ' . $http_code . ' body: ' . $raw_result['body'] );
 		return self::SEND_ERROR;
+	}
+
+	/**
+	 * AJAX handler that returns a fresh nonce.
+	 *
+	 * The contact form page is edge-cached, so the nonce embedded in its HTML
+	 * can be stale or expired by the time a visitor submits, causing the submit
+	 * request to fail check_ajax_referer() with a 403. The frontend fetches a
+	 * fresh nonce from this (never-cached) admin-ajax endpoint at submit time
+	 * instead of trusting the cached one.
+	 */
+	public static function get_nonce() {
+		wp_send_json_success( [ 'nonce' => wp_create_nonce( self::FIELD_NAME ) ] );
 	}
 
 	/**
