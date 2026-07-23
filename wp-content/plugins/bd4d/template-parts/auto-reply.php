@@ -12,7 +12,7 @@ Hello, and welcome to the Better Deal for Data community–we're excited to supp
 
 We'd love to learn more about how you work with data for good, and answer any questions you have about the BD4D Commitments, BD4D Playbook, or implementation. We will contact you personally within the next two business days.
 
-In the meantime, please don't hesitate to contact us at info@bd4d.org to share any feedback or ideas.
+In the meantime, please don't hesitate to contact us at info@bd4d.org to share any feedback or ideas, and follow us on Bluesky (https://bsky.app/profile/bd4d.bsky.social) and LinkedIn (https://www.linkedin.com/company/better-deal-for-data/).
 
 Many thanks,
 <?php else : ?>
@@ -29,15 +29,15 @@ This message is to confirm that you have subscribed to our email updates via our
 
 We'd love to hear your feedback, questions, or stories about data! You can reach us at info@bd4d.org.
 <?php elseif ( ! $newsletter && $endorser ) : // phpcs:ignore Generic.WhiteSpace.ScopeIndent ?>
-This message is to confirm that we have your permission to display your name and affiliation as a BD4D Endorser on our website. We will contact you if we have additional questions regarding your endorsement.
+This message is to confirm that we have your permission to display your name (and affiliation if you've provided one) as a BD4D Endorser on our website. We will contact you if we have additional questions regarding your endorsement.
 
 If you would like to sign up for our email newsletter in the future, or if you have feedback, questions, or a data story to share, please do send us a message at info@bd4d.org. We'd love to hear from you!
 <?php elseif ( $newsletter && $endorser ) : // phpcs:ignore Generic.WhiteSpace.ScopeIndent ?>
 This message is to confirm:
-• We have permission to display your name and affiliation as a BD4D Endorser on our website; and
+• We have permission to display your name (and affiliation if you've provided one) as a BD4D Endorser on our website; and
 • You have subscribed to our email updates via our website. If you wish to unsubscribe from our email updates, please reply to this email with the word "Unsubscribe."
 
-We'd love to hear your feedback, questions, or stories about data! You can reach us at info@bd4d.org.
+We'd love to hear your feedback, questions, or stories about data! You can reach us at info@bd4d.org, and follow us on Bluesky (https://bsky.app/profile/bd4d.bsky.social) and LinkedIn (https://www.linkedin.com/company/better-deal-for-data/)!
 <?php endif; // phpcs:ignore Generic.WhiteSpace.ScopeIndent ?>
 
 All the best,
@@ -48,3 +48,7 @@ Celine
 M Celine Takatsuno
 Better Deal for Data, a Tech Matters initiative.
 Tech Matters is a nonprofit tech organization.
+<?php if ( $endorser && ! $newsletter && ! $adoption ) : // phpcs:ignore Generic.WhiteSpace.ScopeIndent -- Case B: follow line after the signature. ?>
+
+Follow us on Bluesky (https://bsky.app/profile/bd4d.bsky.social) and LinkedIn (https://www.linkedin.com/company/better-deal-for-data/)
+<?php endif; ?>
