@@ -34,7 +34,9 @@ This message is to confirm that we have your permission to display your name (an
 If you would like to sign up for our email newsletter in the future, or if you have feedback, questions, or a data story to share, please do send us a message at info@bd4d.org. We'd love to hear from you!
 <?php elseif ( $newsletter && $endorser ) : // phpcs:ignore Generic.WhiteSpace.ScopeIndent ?>
 This message is to confirm:
+
 • We have permission to display your name (and affiliation if you've provided one) as a BD4D Endorser on our website; and
+
 • You have subscribed to our email updates via our website. If you wish to unsubscribe from our email updates, please reply to this email with the word "Unsubscribe."
 
 We'd love to hear your feedback, questions, or stories about data! You can reach us at info@bd4d.org, and follow us on Bluesky (https://bsky.app/profile/bd4d.bsky.social) and LinkedIn (https://www.linkedin.com/company/better-deal-for-data/)!

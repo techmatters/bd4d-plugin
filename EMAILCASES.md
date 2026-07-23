@@ -59,7 +59,9 @@ Hello, and thank you for joining the Better Deal for Data community!
 We're grateful for your endorsement of the BD4D Standard, and excited to welcome you to this movement to unlock the full potential of data to serve society.
 
 This message is to confirm:
+
 • We have permission to display your name (and affiliation if you've provided one) as a BD4D Endorser on our website; and
+
 • You have subscribed to our email updates via our website. If you wish to unsubscribe from our email updates, please reply to this email with the word "Unsubscribe."
 
 We'd love to hear your feedback, questions, or stories about data! You can reach us at info@bd4d.org, and follow us on Bluesky (https://bsky.app/profile/bd4d.bsky.social) and LinkedIn (https://www.linkedin.com/company/better-deal-for-data/)!
