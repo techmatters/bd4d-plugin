@@ -88,7 +88,7 @@ The plugin writes form submissions to Airtable via the REST API (`https://api.ai
 | `Adoption?` | Adoption checkbox | Boolean | Always sent |
 | `CotW-Opted In?` | _Supporter checkbox — removed from form (v1.0.6); field retained for historical opt-ins_ | Boolean | No longer sent |
 
-**Note:** At least one of `Email Address` or `Form Comments` must be provided for submission.
+**Note:** First and Last Name are required. Email Address is required only when an opt-in checkbox (newsletter / endorser / adoption) is checked; otherwise it is optional.
 
 ### Key Files
 
