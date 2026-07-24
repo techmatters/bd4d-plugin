@@ -22,6 +22,24 @@ window.bd4d = {
 		} );
 	},
 
+	getFreshNonce: function() {
+
+		// The contact form page is cached, so the nonce baked into its HTML can
+		// be stale or expired by submit time (which fails as a 403). Fetch a
+		// fresh one from the never-cached admin-ajax endpoint instead, falling
+		// back to the baked-in nonce if the request fails.
+		return new Promise( function( resolve ) {
+			jQuery.ajax( {
+				type: 'POST',
+				url: localize._ajax_url,
+				data: { action: 'bd4d_nonce' },
+				timeout: 15000,
+				success: ( res ) => resolve( res?.data?.nonce || localize._ajax_nonce ),
+				error: () => resolve( localize._ajax_nonce )
+			} );
+		} );
+	},
+
 	processSubscription: function( event ) {
 		const submitButton = document.querySelector( 'input[type="submit"]' );
 		const originalButtonText = submitButton.value;
@@ -89,19 +107,12 @@ window.bd4d = {
 			return;
 		}
 
-		if ( ! emailAddress && ! message ) {
-			event.target
-				.querySelectorAll( '#inline-subscribe-email,#inline-subscribe-message' )
-				.forEach( ( item ) => item.classList.add( 'has-error' ) );
-			event.target.querySelector( '.error-message' ).textContent = localize.error_codes[6];
-			window.bd4d.resetButton( submitButton, originalButtonText );
-			return;
-		}
-
-		// Fetch a fresh reCAPTCHA token, then send. Doing this at submit time
-		// (rather than at page load) avoids expired-token failures for people
-		// who spend more than ~2 minutes filling out the form.
-		window.bd4d.getRecaptchaToken().then( ( token ) => {
+		// Fetch a fresh reCAPTCHA token and a fresh nonce at submit time, then
+		// send. The reCAPTCHA token expires ~2 min after generation, and the
+		// nonce baked into the cached page can be stale (causing a 403), so both
+		// are refreshed here rather than trusting the page-load values.
+		Promise.all( [ window.bd4d.getFreshNonce(), window.bd4d.getRecaptchaToken() ] ).then( ( [ nonce, token ] ) => {
+			data._ajax_nonce = nonce;
 			data.token = token;
 
 			jQuery.ajax( {
@@ -118,15 +129,20 @@ window.bd4d = {
 							.querySelectorAll( '#joinbd4dnet .et_pb_text_inner,#joinbd4dnet .form-fields' )
 							.forEach( ( item ) => item.classList.add( 'hidden' ) );
 						event.target.querySelector( '.message' ).classList.remove( 'hidden' );
-						if ( emailAddress ) {
-							event.target
-								.querySelectorAll( '.message .yes-email' )
-								.forEach( ( item ) => item.classList.remove( 'hidden' ) );
+
+						// Pick the success message: any opt-in checked -> "watch your
+						// inbox"; otherwise it depends on whether a comment was given.
+						let messageVariant;
+						if ( newsletter.checked || endorser.checked || adoption.checked ) {
+							messageVariant = '.msg-optin';
+						} else if ( message ) {
+							messageVariant = '.msg-comment';
 						} else {
-							event.target
-								.querySelectorAll( '.message .no-email' )
-								.forEach( ( item ) => item.classList.remove( 'hidden' ) );
+							messageVariant = '.msg-nocomment';
 						}
+						event.target
+							.querySelectorAll( '.message ' + messageVariant )
+							.forEach( ( item ) => item.classList.remove( 'hidden' ) );
 					} else {
 						let errorMessage = localize.error_codes[res?.data?.error_code];
 						if ( 4 === res?.data?.error_code ) {

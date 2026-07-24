@@ -35,6 +35,8 @@ class BD4D {
 		add_shortcode( 'bd4d-contact-form', [ __CLASS__, 'render_email_form' ] );
 		add_action( 'wp_ajax_nopriv_send_message', [ __CLASS__, 'send_message' ] );
 		add_action( 'wp_ajax_send_message', [ __CLASS__, 'send_message' ] );
+		add_action( 'wp_ajax_nopriv_bd4d_nonce', [ __CLASS__, 'get_nonce' ] );
+		add_action( 'wp_ajax_bd4d_nonce', [ __CLASS__, 'get_nonce' ] );
 		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'enqueue_scripts' ] );
 	}
 
@@ -217,6 +219,19 @@ class BD4D {
 	}
 
 	/**
+	 * AJAX handler that returns a fresh nonce.
+	 *
+	 * The contact form page is edge-cached, so the nonce embedded in its HTML
+	 * can be stale or expired by the time a visitor submits, causing the submit
+	 * request to fail check_ajax_referer() with a 403. The frontend fetches a
+	 * fresh nonce from this (never-cached) admin-ajax endpoint at submit time
+	 * instead of trusting the cached one.
+	 */
+	public static function get_nonce() {
+		wp_send_json_success( [ 'nonce' => wp_create_nonce( self::FIELD_NAME ) ] );
+	}
+
+	/**
 	 * AJAX action handler for newsletter subscription action.
 	 */
 	public static function send_message() {
@@ -249,22 +264,27 @@ class BD4D {
 
 		$subject = 'Welcome to a Better Deal for Data';
 
-		$result = self::add( $email, $first_name, $last_name, $affiliation, $message, $newsletter, $endorser, $adoption );
-		if ( $email ) {
-			$body = self::message_body( $message, $newsletter, $endorser, $adoption );
-			if ( self::SEND_SUCCESS === $result ) {
+		$result    = self::add( $email, $first_name, $last_name, $affiliation, $message, $newsletter, $endorser, $adoption );
+		$any_optin = $newsletter || $endorser || $adoption;
+
+		if ( self::SEND_SUCCESS === $result ) {
+			// Send the confirmation email only when the user provided an email AND
+			// opted into at least one option. With an email but no opt-in (Case E),
+			// the submission is still recorded in Airtable but no email is sent.
+			if ( $email && $any_optin ) {
+				$body       = self::message_body( $message, $newsletter, $endorser, $adoption );
 				$email_sent = self::send_confirmation_message( $email, $subject, $body );
 				if ( ! $email_sent ) {
 					// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Intentional logging of email errors for debugging.
 					error_log( 'BD4D contact form email send failed for: ' . $email );
 					$result = self::SEND_ERROR;
-				} else {
-					wp_send_json_success();
 				}
 			}
-		} elseif ( self::SEND_SUCCESS === $result ) {
+
+			if ( self::SEND_SUCCESS === $result ) {
 				wp_send_json_success();
 				return;
+			}
 		}
 
 		$data = [ 'error_code' => $result ];
